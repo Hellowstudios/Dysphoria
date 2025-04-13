@@ -60,3 +60,6 @@ dkms.conf
 
 # Build folder
 [Bb]uild
+
+# Caches
+*GLCache*

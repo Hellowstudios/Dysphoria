@@ -1,23 +1,19 @@
 /*******************************************************************************************
  *
- *   raylib pong
- *
  *   COMPILATION (Windows - MinGW):
- *       gcc -o $(NAME_PART).exe $(FILE_NAME) -lraylib -lopengl32 -lgdi32 -lwinmm -Wall -std=c99
+ *       gcc -o main.exe main.c -lraylib -lopengl32 -lgdi32 -lwinmm -Wall -std=c99
  *
  *   COMPILATION (Linux - GCC):
- *       gcc -o $(NAME_PART).exe $(FILE_NAME) -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
- *
- *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
- *   BSD-like license that allows static linking with closed source software
+ *       gcc -o main.exe main.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
  *
  ********************************************************************************************/
 
 #include "raylib.h"
+#include "helpers/res.h"
 
 typedef enum
 {
-    SCREEN_TITLE,
+    SCREEN_TITLE = 0,
     SCREEN_GAMEPLAY,
     SCREEN_ENDING
 } GameScreen;
@@ -29,22 +25,21 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 1920;
-    const int screenHeight = 1080;
+    int screenWidth = 600;
+    int screenHeight = 300;
 
-    // SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_UNDECORATED);
-    InitWindow(screenWidth, screenHeight, "Dysphoria");
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitWindow(screenWidth, screenHeight, "Dysphoria - v0.1");
 
     InitAudioDevice();
 
     // Player
     Rectangle player = {10, screenHeight / 2 - 50, 25, 100};
     float playerSpeed = 8.0f;
-    int playerScore = 0;
 
     // Resources loading
 
-    Music ambient = LoadMusicStream("resources/lake.mp3");
+    Music ambient = LoadMusicStream("/resources/lake.mp3");
     PlayMusicStream(ambient);
 
     // General variables
@@ -53,12 +48,18 @@ int main(void)
     int framesCounter = 0;
     GameScreen currentScreen = SCREEN_TITLE;
 
+    Image playerImage = LoadImage(res("character1.png"));
+    Texture playerTexture = LoadTextureFromImage(playerImage);
+
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
     while (!WindowShouldClose() && !finishGame) // Detect window close button or ESC key
     {
+        int screenHeight = GetScreenHeight();
+        int screenWidth = GetScreenWidth();
+
         // Update
         //----------------------------------------------------------------------------------
         UpdateMusicStream(ambient);
@@ -72,7 +73,7 @@ int main(void)
             // Update TITLE screen
             if (IsKeyPressed(KEY_ENTER))
             {
-                currentScreen = 2;
+                currentScreen = 1;
             }
         }
         break;
@@ -101,7 +102,7 @@ int main(void)
                 pause = !pause;
 
             if (IsKeyPressed(KEY_ENTER))
-                currentScreen = 3;
+                currentScreen = 2;
         }
         break;
         case SCREEN_ENDING:
@@ -122,28 +123,22 @@ int main(void)
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
-
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
 
         switch (currentScreen)
         {
         case SCREEN_TITLE:
         {
-            // Draw TITLE screen
-            // DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
-            // DrawText("SCREEN TITLE", 10, 10, 30, DARKGREEN);
-
-            if ((framesCounter / 30) % 2)
-                DrawText("PRESS ENTER to START", 200, 300, 30, BLACK);
+            DrawText("DYSPHORIA", screenWidth / 1.5, screenHeight / 1.5, 30, BLACK);
+            DrawText(TextFormat("Resolution: %ix%i", screenWidth, screenHeight), 10, 10, 20, BLACK);
         }
         break;
         case SCREEN_GAMEPLAY:
         {
+            DrawTexture(playerTexture, player.x, player.y, WHITE);
 
-            ImageDrawRectangle("./resources/character1.png", player.x, player.y, player.width, player.height, BLUE);
-
-            // Draw hud
-            DrawText(TextFormat("%04i", playerScore), 100, 10, 30, BLUE);
+            // Draw
+            DrawText(TextFormat("Elapsed Time: %02.02f ms", GetFrameTime() * 1000), 200, 220, 20, WHITE);
 
             if (pause)
             {
@@ -169,13 +164,9 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadTexture(texLogo);
-    UnloadFont(fntTitle);
 
     UnloadMusicStream(ambient);
-
     CloseAudioDevice();
-
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

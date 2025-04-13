@@ -18,4 +18,3 @@ A simple game made with raylib.
 `make`
 
 2- Run generated executable (./build/dysphoria.exe) in the linux terminal.
->>>>>>> 074d616 (Makefile build tool support && Make clean the folder structre)

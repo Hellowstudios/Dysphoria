@@ -16,5 +16,7 @@
     "gamesavefiledata.h": "c",
     "stdbool.h": "c"
   },
-  "makefile.configureOnOpen": false
+  "makefile.configureOnOpen": false,
+  "C_Cpp.default.compileCommands": "/home/notfound404/Projects2/dysphoria/builddir/compile_commands.json",
+  "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild"
 }

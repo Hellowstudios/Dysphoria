@@ -9,7 +9,7 @@
  ********************************************************************************************/
 
 #include "raylib.h"
-#include "helpers/res.h"
+#include "includes/res.h"
 
 typedef enum
 {

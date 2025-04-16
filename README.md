@@ -1,5 +1,5 @@
-# Under development
-![Sprite-0010](https://github.com/user-attachments/assets/48e903f5-12e3-4c94-9f8d-4e05e6868d6e)
+> [!NOTE]
+> Projects is currently under development.
 
 # Dysphoria
 
@@ -13,8 +13,4 @@ A simple game made with raylib.
 
 ## How to build
 
-1- Run `make` in the linux terminal.
-
-`make`
-
-2- Run generated executable (./build/dysphoria.exe) in the linux terminal.
+Run ./build.bash in the root directory to build the game to your spesific enviroment.

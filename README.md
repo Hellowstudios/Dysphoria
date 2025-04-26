@@ -3,4 +3,14 @@
 
 ## How to build
 
-Run ./build.bash in the root directory to build the game to your spesific enviroment.
+```bash
+meson setup build
+```
+
+then 
+
+```bash
+meson compile -C build
+```
+
+Executable will be in `build` directory.

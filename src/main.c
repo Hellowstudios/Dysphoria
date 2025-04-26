@@ -18,11 +18,13 @@ int main(void)
     int screenHeight = 300;
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+
     InitWindow(screenWidth, screenHeight, "Dysphoria - v0.1");
+    InitAudioDevice();
+
     // Resources loading
     resourcemManager rm;
     LoadResources(&rm);
-    InitAudioDevice();
 
     // Player
     Rectangle player = {10, screenHeight / 2 - 50, 25, 100};

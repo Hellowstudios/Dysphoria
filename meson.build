@@ -63,6 +63,7 @@ inc_dir = include_directories('src/includes', 'src/includes/utils')
 sources = files(
   'src/main.c',
   'src/utils/resourceManager.c',
+  'src/gameStateManager.c',
 )
 
 executable(

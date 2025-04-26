@@ -1,12 +1,7 @@
 #include "raylib.h"
 #include "resourceManager.h"
-typedef enum
-{
-    SCREEN_TITLE = 0,
-    SCREEN_GAMEPLAY,
-    SCREEN_ENDING
-} GameScreen;
-
+#include "gameStateManager.h"
+void MovePlayer(Rectangle *player, float playerSpeed);
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
@@ -21,11 +16,12 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Dysphoria - v0.1");
     InitAudioDevice();
-
     // Resources loading
-    resourceManager rm;
+    ResourceManager rm;
     InitResources(&rm);
 
+    // Game manager
+    GameStateManager gm = ConstructGameStateManager(gm);
     // Player
     Rectangle player = {10, screenHeight / 2 - 50, 25, 100};
     float playerSpeed = 8.0f;
@@ -33,16 +29,12 @@ int main(void)
     PlayMusicStream(rm.ambient);
 
     // General variables
-    bool pause = false;
-    bool finishGame = false;
-    int framesCounter = 0;
-    GameScreen currentScreen = SCREEN_TITLE;
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    while (!WindowShouldClose() && !finishGame) // Detect window close button or ESC key
+    while (!WindowShouldClose() && !gm.finishGame) // Detect window close button or ESC key
     {
         int screenHeight = GetScreenHeight();
         int screenWidth = GetScreenWidth();
@@ -51,45 +43,29 @@ int main(void)
         //----------------------------------------------------------------------------------
         UpdateMusicStream(rm.ambient);
 
-        switch (currentScreen)
+        switch (gm.currentScreen)
         {
         case SCREEN_TITLE:
         {
-            framesCounter++;
-
             // Update TITLE screen
             if (IsKeyPressed(KEY_ENTER))
             {
-                currentScreen = 1;
+                gm.currentScreen = 1;
             }
         }
         break;
         case SCREEN_GAMEPLAY:
         {
             // Update GAMEPLAY screen
-            if (!pause)
+            if (!gm.pause)
             {
-                // Player movement logic
-                if (IsKeyDown(KEY_UP))
-                    player.y -= playerSpeed;
-                else if (IsKeyDown(KEY_DOWN))
-                    player.y += playerSpeed;
-                else if (IsKeyDown(KEY_RIGHT))
-                    player.x += playerSpeed;
-                else if (IsKeyDown(KEY_LEFT))
-                    player.x -= playerSpeed;
-
-                if (player.y <= 0)
-                    player.y = 0;
-                else if ((player.y + player.height) >= screenHeight)
-                    player.y = screenHeight - player.height;
+                MovePlayer(&player, playerSpeed);
             }
-
             if (IsKeyPressed(KEY_P))
-                pause = !pause;
+                gm.pause = !gm.pause;
 
             if (IsKeyPressed(KEY_ENTER))
-                currentScreen = 2;
+                gm.currentScreen = 2;
         }
         break;
         case SCREEN_ENDING:
@@ -98,7 +74,7 @@ int main(void)
             if (IsKeyPressed(KEY_ENTER))
             {
                 // currentScreen = 1;
-                finishGame = true;
+                gm.finishGame = true;
             }
         }
         break;
@@ -112,7 +88,7 @@ int main(void)
         BeginDrawing();
         ClearBackground(BLACK);
 
-        switch (currentScreen)
+        switch (gm.currentScreen)
         {
         case SCREEN_TITLE:
         {
@@ -127,7 +103,7 @@ int main(void)
             // Draw
             DrawText(TextFormat("Elapsed Time: %02.02f ms", GetFrameTime() * 1000), 200, 220, 20, WHITE);
 
-            if (pause)
+            if (gm.pause)
             {
                 DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(WHITE, 0.8f));
                 DrawText("GAME PAUSED", 320, 200, 30, RED);
@@ -157,4 +133,20 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     return 0;
+}
+void MovePlayer(Rectangle *player, float playerSpeed)
+{
+    if (IsKeyDown(KEY_UP))
+        player->y -= playerSpeed;
+    else if (IsKeyDown(KEY_DOWN))
+        player->y += playerSpeed;
+    else if (IsKeyDown(KEY_RIGHT))
+        player->x += playerSpeed;
+    else if (IsKeyDown(KEY_LEFT))
+        player->x -= playerSpeed;
+
+    if (player->y <= 0)
+        player->y = 0;
+    else if ((player->y + player->height) >= GetScreenHeight())
+        player->y = GetScreenHeight() - player->height;
 }

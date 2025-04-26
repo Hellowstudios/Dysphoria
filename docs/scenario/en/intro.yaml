@@ -1,0 +1,91 @@
+version: 1
+last_updated: 26/04/25
+chapter: Intro
+description:
+  Our character slowly wakes up in a room on a bed. Upon waking, she don't know where she is. She starts to scare and move towards the door to leave the room, but the door won't open. She look around, trying to understand where is this place and how got there.
+
+goal: The character needs to understand where they are by interacting with 80% of the objects in the room to move on to the next chapter.
+
+dialogues:
+  - dialogue:
+    character: main
+    text: [Where am I?, WHERE AM I!??, Am I still dreaming?, Am I asleep?, I'm not asleep, where is this place?]
+    trigger: After the character wakes up.
+
+  - dialogue:
+    character: main
+    text: [WHERE AM I!??, "*You starts to scream into the room* HEEY!! I DON'T KNOW WHO YOU ARE AND HOW DID YOU GET ME IN HERE. PLEASE LET ME OUT*"]
+    trigger: After interacting with 2 items.
+
+  - dialogue:
+    character: main
+    text: "*You scared*"
+    trigger: After interacting with 4 items.
+
+  - dialogue:
+    character: main
+    text: "The floor, doesn't feel like wood."
+    trigger: After walking for a while and being on the ground.
+    
+  - dialogue:
+    character: main
+    text: "*Tries to force the door open* open! you idiot door."
+    trigger: When interacting with the door.
+
+  - dialogue:
+    character: main
+    text: "*Looks into the keyhole of the door* Hmm."
+    trigger: When interacting with the door x2
+    
+  - dialogue:
+    character: main
+    text: "*Kicks the door* fuck"
+    trigger: When interacting with the door x3
+    
+  - dialogue:
+    character: main
+    text: ["That's not a window, just a painting.", "I probably still dreaming."]
+    trigger: When interacting with window
+    
+  - dialogue:
+    character: main
+    text: ["Where the hell am I?", "Why raindrops are red?", "There is empty building but looks like abandoned.", "Why I can't see the see down? it's so foggy."]
+    trigger: When interacting with window with bloody rain
+    options:
+        - look_at_taste_of_rain_water:
+          - dialogue:
+            character: main
+            text: It's like a taste of rain water.
+
+  - dialogue:
+    character: main
+    text: "I wonder whose flowers these are?"
+    trigger: When interacting with any flower.
+
+  - dialogue:
+    text: ["I like flowers.", "They reminds me..."]
+    trigger: When interacting with any flower x2
+
+  - dialogue:
+    character: main
+    text: "*As you keep looking, you feel uncomfortable.*"
+    trigger: When interacting with any flower x3
+
+  - dialogue:
+    character: main
+    options:
+            - look_at_hole:
+              - dialogue:
+                character: main
+                text: The inside of the hole looks very dark.
+                options: 
+                    - touch_edges_of_hole:
+                      - dialogue: 
+                        character: main
+                        text: It feels weird.
+                    - scream_at_hole:
+                      - dialogue:
+                        character: main
+                        text: ["*You scream into the hole, and your voice echoes down.",  "*You think you hear a breathing sound from deep down but aren't sure.","You back away from the hole.*"]
+                      
+    trigger: When interacting with the hole on the floor.

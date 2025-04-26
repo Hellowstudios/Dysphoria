@@ -1,5 +1,5 @@
 #include "raylib.h"
-
+#include "resourceManager.h"
 typedef enum
 {
     SCREEN_TITLE = 0,
@@ -13,32 +13,28 @@ typedef enum
 int main(void)
 {
     // Initialization
-    //--------------------------------------------------------------------------------------
+    //--------------    ------------------------------------------------------------------------
     int screenWidth = 600;
     int screenHeight = 300;
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(screenWidth, screenHeight, "Dysphoria - v0.1");
-
+    // Resources loading
+    resourcemManager rm;
+    LoadResources(&rm);
     InitAudioDevice();
 
     // Player
     Rectangle player = {10, screenHeight / 2 - 50, 25, 100};
     float playerSpeed = 8.0f;
 
-    // Resources loading
-
-    Music ambient = LoadMusicStream("./resources/ocean.mp3");
-    PlayMusicStream(ambient);
+    PlayMusicStream(rm.ambient);
 
     // General variables
     bool pause = false;
     bool finishGame = false;
     int framesCounter = 0;
     GameScreen currentScreen = SCREEN_TITLE;
-
-    Image playerImage = LoadImage("./resources/walk1.png");
-    Texture playerTexture = LoadTextureFromImage(playerImage);
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -51,7 +47,7 @@ int main(void)
 
         // Update
         //----------------------------------------------------------------------------------
-        UpdateMusicStream(ambient);
+        UpdateMusicStream(rm.ambient);
 
         switch (currentScreen)
         {
@@ -124,7 +120,7 @@ int main(void)
         break;
         case SCREEN_GAMEPLAY:
         {
-            DrawTexture(playerTexture, player.x, player.y, WHITE);
+            DrawTexture(rm.playerTexture, player.x, player.y, WHITE);
 
             // Draw
             DrawText(TextFormat("Elapsed Time: %02.02f ms", GetFrameTime() * 1000), 200, 220, 20, WHITE);
@@ -154,7 +150,7 @@ int main(void)
     // De-Initialization
     //--------------------------------------------------------------------------------------
 
-    UnloadMusicStream(ambient);
+    UnloadMusicStream(rm.ambient);
     CloseAudioDevice();
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------

@@ -11,18 +11,24 @@ dependencies = []
 cmake = import('cmake')
 raylib_opts = cmake.subproject_options()
 raylib_opts.set_install(false)
-raylib_opts.add_cmake_defines({
-  'BUILD_EXAMPLES': 'OFF',
-  # Add other CMake options for Raylib, if needed
-})
+raylib_opts.add_cmake_defines(
+  {
+    'BUILD_EXAMPLES': 'OFF',
+    # Add other CMake options for Raylib, if needed
+  },
+)
 if cc.get_id() == 'emscripten'
-  raylib_opts.add_cmake_defines({
-    'PLATFORM': 'Web',
-  })
+  raylib_opts.add_cmake_defines(
+    {
+      'PLATFORM': 'Web',
+    },
+  )
 else
-  raylib_opts.add_cmake_defines({
-    'PLATFORM': 'Desktop',
-  })
+  raylib_opts.add_cmake_defines(
+    {
+      'PLATFORM': 'Desktop',
+    },
+  )
 endif
 raylib_subproject = cmake.subproject('raylib', options: raylib_opts)
 dependencies += raylib_subproject.dependency('raylib')
@@ -52,15 +58,15 @@ elif host_machine.system() == 'emscripten'
 endif
 
 # Project files
-inc_dir = include_directories(
-  'src/includes'
-)
+inc_dir = include_directories('src/includes', 'src/utils')
 
 sources = files(
   'src/main.c',
+  'src/utils/resourceManager.c',
 )
 
-executable('dysphoria',
+executable(
+  'dysphoria',
   sources,
   c_args: c_args,
   dependencies: dependencies,
@@ -68,4 +74,3 @@ executable('dysphoria',
   link_args: link_args,
   name_suffix: name_suffix,
 )
-

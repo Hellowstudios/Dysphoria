@@ -23,7 +23,7 @@ int main(void)
     InitAudioDevice();
 
     // Resources loading
-    resourcemManager rm;
+    resourceManager rm;
     LoadResources(&rm);
 
     // Player
@@ -116,7 +116,7 @@ int main(void)
         {
         case SCREEN_TITLE:
         {
-            DrawText("DYSPHORIA", screenWidth / 1.5, screenHeight / 1.5, 30, BLACK);
+            DrawText("DYSPHORIA", screenWidth / 1.5, screenHeight / 1.5, 30, WHITE);
             DrawText(TextFormat("Resolution: %ix%i", screenWidth, screenHeight), 10, 10, 20, BLACK);
         }
         break;
@@ -151,8 +151,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-
-    UnloadMusicStream(rm.ambient);
+    UnloadResources(&rm);
     CloseAudioDevice();
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------

@@ -4,5 +4,7 @@ typedef struct
 {
     Texture playerTexture;
     Music ambient;
-} resourcemManager;
-void LoadResources(resourcemManager *resourceManager);
+} resourceManager;
+
+void LoadResources(resourceManager *resourceManager);
+void UnloadResources(resourceManager *resourceManager);

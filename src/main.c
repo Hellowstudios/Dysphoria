@@ -1,5 +1,4 @@
 #include "raylib.h"
-#include "includes/res.h"
 
 typedef enum
 {

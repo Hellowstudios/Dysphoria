@@ -26,7 +26,7 @@ dialogues:
     trigger: Herhangi bir çiçekle etkileşime geçildiğinde
 
   - dialogue: 
-    text: "Çok güzel görünüyorlar."
+    text: "Çok güzel görünüyorlar." 
     trigger: Herhangi bir çiçekle etkileşime geçildiğinde x2
 
 

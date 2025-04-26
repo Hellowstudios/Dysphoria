@@ -38,6 +38,7 @@ int main(void)
     int framesCounter = 0;
     GameScreen currentScreen = SCREEN_TITLE;
 
+    Image playerImage = LoadImage(res("walk1.png"));
     Texture playerTexture = LoadTextureFromImage(playerImage);
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
@@ -48,8 +49,6 @@ int main(void)
     {
         int screenHeight = GetScreenHeight();
         int screenWidth = GetScreenWidth();
-
-        Image playerImage = LoadImage(res("walk1.png"));
 
         // Update
         //----------------------------------------------------------------------------------

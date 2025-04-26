@@ -58,7 +58,7 @@ elif host_machine.system() == 'emscripten'
 endif
 
 # Project files
-inc_dir = include_directories('src/includes', 'src/utils')
+inc_dir = include_directories('src/includes', 'src/includes/utils')
 
 sources = files(
   'src/main.c',

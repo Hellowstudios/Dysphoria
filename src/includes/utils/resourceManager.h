@@ -6,5 +6,5 @@ typedef struct
     Music ambient;
 } resourceManager;
 
-void LoadResources(resourceManager *resourceManager);
+void InitResources(resourceManager *resourceManager);
 void UnloadResources(resourceManager *resourceManager);

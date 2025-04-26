@@ -5,7 +5,7 @@
 #include "gameSaveFileData.h"
 
 /**
- * Reads the game save file and returns the gameSaveFileData
+ * Reads the game save file and returns the GameSaveFileData
  */
 int readGameSaveFile()
 {
@@ -17,10 +17,10 @@ int readGameSaveFile()
         return errno + 1;
     }
 
-    struct gameSaveFileData *obuff = malloc(sizeof(gameSaveFileData));
+    struct GameSaveFileData *obuff = malloc(sizeof(GameSaveFileData));
 
     // Reads the entire struct at once
-    size_t elements_read = fread(obuff, sizeof(gameSaveFileData), 1, records);
+    size_t elements_read = fread(obuff, sizeof(GameSaveFileData), 1, records);
 
     if (elements_read == 1)
     {

@@ -1,15 +1,15 @@
 #include "raylib.h"
 #include "resourceManager.h"
 
-void InitResources(resourceManager *resourceManager)
+void InitResources(ResourceManager *ResourceManager)
 {
-    resourceManager->ambient = LoadMusicStream("./resources/ocean.mp3");
+    ResourceManager->ambient = LoadMusicStream("./resources/ocean.mp3");
     Image playerImage = LoadImage("./resources/walk1.png");
-    resourceManager->playerTexture = LoadTextureFromImage(playerImage);
+    ResourceManager->playerTexture = LoadTextureFromImage(playerImage);
     UnloadImage(playerImage);
 }
-void UnloadResources(resourceManager *resourceManager)
+void UnloadResources(ResourceManager *ResourceManager)
 {
-    UnloadTexture(resourceManager->playerTexture);
-    UnloadMusicStream(resourceManager->ambient);
+    UnloadTexture(ResourceManager->playerTexture);
+    UnloadMusicStream(ResourceManager->ambient);
 }

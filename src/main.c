@@ -24,7 +24,7 @@ int main(void)
 
     // Resources loading
     resourceManager rm;
-    LoadResources(&rm);
+    InitResources(&rm);
 
     // Player
     Rectangle player = {10, screenHeight / 2 - 50, 25, 100};

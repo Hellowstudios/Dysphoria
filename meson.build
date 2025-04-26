@@ -64,7 +64,7 @@ sources = files(
   'src/main.c',
   'src/utils/resourceManager.c',
   'src/gameStateManager.c',
-  'src/inputManager.c',
+  'src/utils/inputManager.c',
 )
 
 executable(

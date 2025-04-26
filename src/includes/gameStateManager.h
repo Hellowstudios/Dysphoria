@@ -13,4 +13,4 @@ typedef struct
     bool finishGame;
 } GameStateManager;
 
-GameStateManager ConstructGameStateManager(GameStateManager gm);
+GameStateManager ConstructGameStateManager();

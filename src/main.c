@@ -29,7 +29,7 @@ int main(void)
 
     // Resources loading
 
-    Music ambient = LoadMusicStream(res("lake.mp3"));
+    Music ambient = LoadMusicStream("./resources/ocean.mp3");
     PlayMusicStream(ambient);
 
     // General variables
@@ -38,7 +38,7 @@ int main(void)
     int framesCounter = 0;
     GameScreen currentScreen = SCREEN_TITLE;
 
-    Image playerImage = LoadImage(res("walk1.png"));
+    Image playerImage = LoadImage("./resources/walk1.png");
     Texture playerTexture = LoadTextureFromImage(playerImage);
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second

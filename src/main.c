@@ -1,13 +1,3 @@
-/*******************************************************************************************
- *
- *   COMPILATION (Windows - MinGW):
- *       gcc -o main.exe main.c -lraylib -lopengl32 -lgdi32 -lwinmm -Wall -std=c99
- *
- *   COMPILATION (Linux - GCC):
- *       gcc -o main.exe main.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
- *
- ********************************************************************************************/
-
 #include "raylib.h"
 #include "includes/res.h"
 

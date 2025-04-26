@@ -1,7 +1,7 @@
 #include "raylib.h"
 #include "resourceManager.h"
 #include "gameStateManager.h"
-void MovePlayer(Rectangle *player, float playerSpeed);
+#include "inputManager.h"
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
@@ -61,11 +61,7 @@ int main(void)
             {
                 MovePlayer(&player, playerSpeed);
             }
-            if (IsKeyPressed(KEY_P))
-                gm.pause = !gm.pause;
-
-            if (IsKeyPressed(KEY_ENTER))
-                gm.currentScreen = 2;
+            PauseGame(&gm);
         }
         break;
         case SCREEN_ENDING:
@@ -133,20 +129,4 @@ int main(void)
     //--------------------------------------------------------------------------------------
 
     return 0;
-}
-void MovePlayer(Rectangle *player, float playerSpeed)
-{
-    if (IsKeyDown(KEY_UP))
-        player->y -= playerSpeed;
-    else if (IsKeyDown(KEY_DOWN))
-        player->y += playerSpeed;
-    else if (IsKeyDown(KEY_RIGHT))
-        player->x += playerSpeed;
-    else if (IsKeyDown(KEY_LEFT))
-        player->x -= playerSpeed;
-
-    if (player->y <= 0)
-        player->y = 0;
-    else if ((player->y + player->height) >= GetScreenHeight())
-        player->y = GetScreenHeight() - player->height;
 }

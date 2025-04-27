@@ -15,10 +15,10 @@ int finishMainMenuScreen(void);
 //----------------------------------------------------------------------------------
 // Intro Screen Functions Declaration
 //----------------------------------------------------------------------------------
-void initIntroScreen(void);
+void initIntroScreen(ResourcesState *rs);
 void updateIntroScreen(MainState *ms, PlayerMovementState *pms);
 void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms);
-void unloadIntroScreen(void);
+void unloadIntroScreen(ResourcesState *rs);
 int finishIntroScreen(void);
 
 //----------------------------------------------------------------------------------

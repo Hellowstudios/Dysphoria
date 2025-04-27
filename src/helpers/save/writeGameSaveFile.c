@@ -2,12 +2,12 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "gameSaveFileData.h"
+#include "states.h"
 
 /**
- * Writes gameSaveFileData to the game save file
+ * Writes SaveFile to the game save file
  */
-int writeGameSaveFile(gameSaveFileData *inputSaveFile)
+int writeGameSaveFile(SaveFile *inputSaveFile)
 {
     FILE *gameSaveFile = fopen("/Documents/dysphoria/save.bin", "wb");
 
@@ -17,7 +17,7 @@ int writeGameSaveFile(gameSaveFileData *inputSaveFile)
         return errno + 1;
     };
 
-    size_t elements_written = fwrite(inputSaveFile, sizeof(gameSaveFileData), 1, gameSaveFile);
+    size_t elements_written = fwrite(inputSaveFile, sizeof(SaveFile), 1, gameSaveFile);
 
     if (elements_written != 1)
     {

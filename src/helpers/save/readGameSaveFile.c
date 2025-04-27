@@ -2,10 +2,10 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "gameSaveFileData.h"
+#include "states.h"
 
 /**
- * Reads the game save file and returns the GameSaveFileData
+ * Reads the game save file and returns the SaveFile
  */
 int readGameSaveFile()
 {
@@ -17,10 +17,10 @@ int readGameSaveFile()
         return errno + 1;
     }
 
-    struct GameSaveFileData *obuff = malloc(sizeof(GameSaveFileData));
+    struct SaveFile *obuff = malloc(sizeof(SaveFile));
 
     // Reads the entire struct at once
-    size_t elements_read = fread(obuff, sizeof(GameSaveFileData), 1, records);
+    size_t elements_read = fread(obuff, sizeof(SaveFile), 1, records);
 
     if (elements_read == 1)
     {

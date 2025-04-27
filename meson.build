@@ -60,15 +60,20 @@ endif
 # Project files
 inc_dir = include_directories(
   'src/includes', 
-  'src/includes/utils',
-  'src/includes/screens',
+  'src/includes/helpers',
 )
 
 sources = files(
   'src/main.c',
-  'src/utils/resourceManager.c',
-  'src/utils/gameStateManager.c',
-  'src/utils/inputManager.c',
+  
+  'src/screens/ending.c',  
+  'src/screens/intro.c',
+  'src/screens/mainMenu.c',
+  'src/screens/transition.c',
+
+  'src/helpers/save/readGameSaveFile.c',
+  'src/helpers/save/writeGameSaveFile.c',
+  'src/helpers/player.c',
 )
 
 executable(

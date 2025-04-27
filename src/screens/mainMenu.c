@@ -1,27 +1,35 @@
-#include "gameStateManager.h"
+#include "raylib.h"
+#include "states.h"
 
-void initMainMenuScreen(GameStateManager *gm) {
+//----------------------------------------------------------------------------------
+// Global Variables Definition (local to this module)
+//----------------------------------------------------------------------------------
+static int finishScreen;
 
+void initMainMenuScreen() {
+    // init variables here
+    finishScreen = 0;
 };
 
-void updateMainMenuScreen(GameStateManager *gm) {
+void updateMainMenuScreen() {
         // Update TITLE screen
         if (IsKeyPressed(KEY_ENTER))
         {
-            gm.currentScreen = 1;
+            finishScreen = 1;
         }
 };
 
-void drawMainMenuScreen(GameStateManager *gm)
+void drawMainMenuScreen(WindowState *ws)
 {
-    DrawText("DYSPHORIA", screenWidth / 1.5, screenHeight / 1.5, 30, WHITE);
-    DrawText(TextFormat("Resolution: %ix%i", screenWidth, screenHeight), 10, 10, 20, BLACK);
+    DrawText("DYSPHORIA", ws->screenWidth / 1.5, ws->screenHeight / 1.5, 30, WHITE);
+    DrawText(TextFormat("Resolution: %ix%i", ws->screenWidth, ws->screenHeight), 10, 10, 20, BLACK);
 };
 
-void unloadMainMenuScreen(GameStateManager *gm)
+void unloadMainMenuScreen()
 {
 }
 
-void finishMainMenuScreen(GameStateManager *gm)
+int finishMainMenuScreen()
 {
+    return finishScreen;
 }

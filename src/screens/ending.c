@@ -1,31 +1,34 @@
-#include "gameStateManager.h"
+#include "raylib.h"
+#include "screens.h"
 
-void initEndingScreen(GameStateManager *gm) {
+//----------------------------------------------------------------------------------
+// Global Variables Definition (local to this module)
+//----------------------------------------------------------------------------------
+static int finishScreen;
 
+void initEndingScreen() {
+    // init variables here
+    finishScreen = 0;
 };
 
-void updateEndingScreen(GameStateManager *gm) {
-
-};
-
-void drawEndingScreen(GameStateManager *gm)
-{
-    DrawTexture(rm->playerTexture, player->x, player->y, WHITE);
-
-    // Draw
-    DrawText(TextFormat("Elapsed Time: %02.02f ms", GetFrameTime() * 1000), 200, 220, 20, WHITE);
-
-    if (gm->pause)
+void updateEndingScreen() {
+    // Update ENDING screen
+    if (IsKeyPressed(KEY_ENTER))
     {
-        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(WHITE, 0.8f));
-        DrawText("GAME PAUSED", 320, 200, 30, RED);
+      finishScreen = 1;
     }
 };
 
-void unloadEndingScreen(GameStateManager *gm)
+void drawEndingScreen()
+{
+    DrawText("ENDING", 320, 200, 30, RED);
+};
+
+void unloadEndingScreen()
 {
 }
 
-void finishEndingScreen(GameStateManager *gm)
+int finishEndingScreen()
 {
+   return finishScreen;
 }

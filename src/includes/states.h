@@ -31,6 +31,7 @@ typedef enum
     MAIN_MENU = 0,
     INTRO,
     ENDING,
+    OPTIONS,
 } Screen;
 
 //----------------------------------------------------------------------------------
@@ -48,6 +49,17 @@ typedef struct
 typedef struct
 {
     Texture playerWalk1Texture;
+    Texture playerWalk2Texture;
+    
+    Texture playerLeftWalk1Texture;
+    Texture playerLeftWalk2Texture;
+    Texture playerLeftWalk3Texture;
+    
+    Texture playerRightWalk1Texture;
+    Texture playerRightWalk2Texture;
+    Texture playerRightWalk3Texture;
+
+    Font mainFont;
 } ResourcesState;
 
 //----------------------------------------------------------------------------------
@@ -70,5 +82,7 @@ typedef struct
     unsigned hour : 5;   // 0-23 range
     unsigned minute : 6; // 0-59 range
 } SaveFile;
+
+
 
 #endif

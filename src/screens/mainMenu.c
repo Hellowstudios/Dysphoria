@@ -6,17 +6,19 @@
 //----------------------------------------------------------------------------------
 static int finishScreen;
 
-void initMainMenuScreen() {
+void initMainMenuScreen()
+{
     // init variables here
     finishScreen = 0;
 };
 
-void updateMainMenuScreen() {
-        // Update TITLE screen
-        if (IsKeyPressed(KEY_ENTER))
-        {
-            finishScreen = 1;
-        }
+void updateMainMenuScreen()
+{
+    // Update TITLE screen
+    if (IsKeyPressed(KEY_ENTER))
+    {
+        finishScreen = 1;
+    }
 };
 
 void drawMainMenuScreen(WindowState *ws)

@@ -32,7 +32,7 @@ void UpdateScreenTransition(ScreenState *state)
             framesCounter = 0;
         }
     }
-    else  // Transition fade out logic
+    else // Transition fade out logic
     {
         transAlpha -= 0.02f;
 

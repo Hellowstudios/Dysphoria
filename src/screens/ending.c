@@ -6,16 +6,18 @@
 //----------------------------------------------------------------------------------
 static int finishScreen;
 
-void initEndingScreen() {
+void initEndingScreen()
+{
     // init variables here
     finishScreen = 0;
 };
 
-void updateEndingScreen() {
+void updateEndingScreen()
+{
     // Update ENDING screen
     if (IsKeyPressed(KEY_ENTER))
     {
-      finishScreen = 1;
+        finishScreen = 1;
     }
 };
 
@@ -30,5 +32,5 @@ void unloadEndingScreen()
 
 int finishEndingScreen()
 {
-   return finishScreen;
+    return finishScreen;
 }

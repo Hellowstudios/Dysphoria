@@ -6,8 +6,8 @@ void DrawGame(
     ResourcesState *rs,
     ScreenState *ss,
     WindowState *ws,
-    PlayerMovementState *pms
-) {
+    PlayerMovementState *pms)
+{
     // int screenHeight = GetScreenHeight();
     // int screenWidth = GetScreenWidth();
     BeginDrawing();
@@ -15,12 +15,19 @@ void DrawGame(
 
     switch (ss->currentScreen)
     {
-        case MAIN_MENU: drawMainMenuScreen(ws); break;
-        case INTRO: drawIntroScreen(rs, ms, pms); break;
-        case ENDING: drawEndingScreen(); break;
+    case MAIN_MENU:
+        drawMainMenuScreen(ws);
+        break;
+    case INTRO:
+        drawIntroScreen(rs, ms, pms);
+        break;
+    case ENDING:
+        drawEndingScreen();
+        break;
     }
 
-    if (ss->onTransition) DrawScreenTransition();
+    if (ss->onTransition)
+        DrawScreenTransition();
 
     EndDrawing();
 }
@@ -30,46 +37,51 @@ void UpdateGame(
     ResourcesState *rs,
     ScreenState *ss,
     WindowState *ws,
-    PlayerMovementState *pms
-) {
+    PlayerMovementState *pms)
+{
     if (!ss->onTransition)
     {
         switch (ss->currentScreen)
         {
-            case MAIN_MENU:
-            {
-                updateMainMenuScreen();
-                
-                if (finishMainMenuScreen())
-                {
-                    initIntroScreen();
-                    TransitionToScreen(ss, INTRO);
-                    unloadMainMenuScreen();
-                }
-            } break;        
-            case INTRO:
-            {
-                updateIntroScreen(ms, pms);
+        case MAIN_MENU:
+        {
+            updateMainMenuScreen();
 
-                if (finishIntroScreen())
-                {
-                    initEndingScreen();
-                    TransitionToScreen(ss, ENDING);
-                    unloadIntroScreen();
-                }
-            } break;
-            case ENDING:
+            if (finishMainMenuScreen())
             {
-                updateEndingScreen();
-
-                if (finishIntroScreen())
-                {
-                    initEndingScreen();
-                    unloadIntroScreen();
-                }
-            } break;
+                initIntroScreen();
+                TransitionToScreen(ss, INTRO);
+                unloadMainMenuScreen();
+            }
         }
-    } else UpdateScreenTransition(ss);
+        break;
+        case INTRO:
+        {
+            updateIntroScreen(ms, pms);
+
+            if (finishIntroScreen())
+            {
+                initEndingScreen();
+                TransitionToScreen(ss, ENDING);
+                unloadIntroScreen();
+            }
+        }
+        break;
+        case ENDING:
+        {
+            updateEndingScreen();
+
+            if (finishIntroScreen())
+            {
+                initEndingScreen();
+                unloadIntroScreen();
+            }
+        }
+        break;
+        }
+    }
+    else
+        UpdateScreenTransition(ss);
 }
 
 //------------------------------------------------------------------------------------
@@ -80,7 +92,7 @@ int main(void)
     // --------------------------------------------------------------------------------------
     // Game initialization
     // --------------------------------------------------------------------------------------
-  
+
     ResourcesState rs;
     WindowState ws = {600, 300};
     MainState ms = {false, false};

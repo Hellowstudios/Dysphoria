@@ -1,7 +1,8 @@
 #include "raylib.h"
 #include "states.h"
 
-void updatePlayerMovement(MainState *ms, PlayerMovementState *pms) {
+void updatePlayerMovement(MainState *ms, PlayerMovementState *pms)
+{
     if (!ms->pause)
     {
         if (IsKeyDown(KEY_UP))

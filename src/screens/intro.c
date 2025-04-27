@@ -8,16 +8,19 @@
 //----------------------------------------------------------------------------------
 static int finishScreen;
 
-void initIntroScreen() {
+void initIntroScreen()
+{
     // init variables here
     finishScreen = 0;
 };
 
-void updateIntroScreen(MainState *ms, PlayerMovementState *pms) {
+void updateIntroScreen(MainState *ms, PlayerMovementState *pms)
+{
     // Update GAMEPLAY screen
     updatePlayerMovement(ms, pms);
 
-    if (IsKeyPressed(KEY_ENTER)) finishScreen = 1;
+    if (IsKeyPressed(KEY_ENTER))
+        finishScreen = 1;
 };
 
 void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms)
@@ -31,8 +34,7 @@ void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms
     }
 };
 
-void unloadIntroScreen()
-{
+void unloadIntroScreen() {
 };
 
 int finishIntroScreen()

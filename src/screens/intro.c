@@ -1,31 +1,41 @@
-#include "gameStateManager.h"
+#include "raylib.h"
+#include "screens.h"
+#include "states.h"
+#include "player.h"
 
-void initIntroScreen(GameStateManager *gm) {
+//----------------------------------------------------------------------------------
+// Global Variables Definition (local to this module)
+//----------------------------------------------------------------------------------
+static int finishScreen;
 
+void initIntroScreen() {
+    // init variables here
+    finishScreen = 0;
 };
 
-void updateIntroScreen(GameStateManager *gm) {
+void updateIntroScreen(MainState *ms, PlayerMovementState *pms) {
+    // Update GAMEPLAY screen
+    updatePlayerMovement(ms, pms);
 
+    if (IsKeyPressed(KEY_ENTER)) finishScreen = 1;
 };
 
-void drawIntroScreen(GameStateManager *gm)
+void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms)
 {
-    DrawTexture(rm->playerTexture, player->x, player->y, WHITE);
+    DrawTexture(rs->playerWalk1Texture, pms->player.x, pms->player.y, WHITE);
 
-    // Draw
-    DrawText(TextFormat("Elapsed Time: %02.02f ms", GetFrameTime() * 1000), 200, 220, 20, WHITE);
-
-    if (gm->pause)
+    if (ms->pause)
     {
         DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(WHITE, 0.8f));
         DrawText("GAME PAUSED", 320, 200, 30, RED);
     }
 };
 
-void unloadIntroScreen(GameStateManager *gm)
+void unloadIntroScreen()
 {
-}
+};
 
-void finishIntroScreen(GameStateManager *gm)
+int finishIntroScreen()
 {
-}
+    return finishScreen;
+};

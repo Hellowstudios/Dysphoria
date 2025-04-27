@@ -1,115 +1,114 @@
 #include "raylib.h"
-#include "resourceManager.h"
-#include "gameStateManager.h"
-#include "inputManager.h"
 #include "screens.h"
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
-void DrawGame(GameStateManager *gm, ResourceManager *rm, Rectangle *player);
-
-int main(void)
-{
-    // Initialization
-    //--------------    ------------------------------------------------------------------------
-    int screenWidth = 600;
-    int screenHeight = 300;
-
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-
-    InitWindow(screenWidth, screenHeight, "Dysphoria - v0.1");
-    InitAudioDevice();
-    // Resources loading
-    ResourceManager rm;
-    InitResources(&rm);
-
-    // Game manager
-    GameStateManager gm = ConstructGameStateManager();
-  
-    // Player
-    Rectangle player = {10, screenHeight / 2 - 50, 25, 100};
-    float playerSpeed = 8.0f;
-
-    PlayMusicStream(rm.ambient);
-
-    // General variables
-    SetTargetFPS(60); // Set our game to run at 60 frames-per-second
-
-    //--------------------------------------------------------------------------------------
-
-    // Main game loop
-    while (!WindowShouldClose() && !gm.finishGame) // Detect window close button or ESC key
-    {
-        int screenHeight = GetScreenHeight();
-        int screenWidth = GetScreenWidth();
-
-        UpdateGame(&gm, &rm, &player);
-        DrawGame(&gm, &rm, &player);
-    }
-
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    UnloadResources(&rm);
-    CloseAudioDevice();
-    CloseWindow(); // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
-
-    return 0;
-}
-
-void DrawGame(GameStateManager *gm, ResourceManager *rm, Rectangle *player)
-{
-    int screenHeight = GetScreenHeight();
-    int screenWidth = GetScreenWidth();
+void DrawGame(
+    MainState *ms,
+    ResourcesState *rs,
+    ScreenState *ss,
+    WindowState *ws,
+    PlayerMovementState *pms
+) {
+    // int screenHeight = GetScreenHeight();
+    // int screenWidth = GetScreenWidth();
     BeginDrawing();
     ClearBackground(BLACK);
 
-    switch (gm->currentScreen)
+    switch (ss->currentScreen)
     {
-        case MAIN_MENU: drawMainMenuScreen(rm, player); break;
-        case INTRO: drawIntroScreen(rm, player); break;
-        case ENDING: drawEndingScreen(rm, player); break;
+        case MAIN_MENU: drawMainMenuScreen(ws); break;
+        case INTRO: drawIntroScreen(rs, ms, pms); break;
+        case ENDING: drawEndingScreen(); break;
     }
+
+    if (ss->onTransition) DrawScreenTransition();
 
     EndDrawing();
 }
 
-void UpdateGame(GameStateManager *gm, ResourceManager *rm, Rectangle *player)
-{
-    UpdateMusicStream(rm.ambient);
-
-    switch (gm.currentScreen)
+void UpdateGame(
+    MainState *ms,
+    ResourcesState *rs,
+    ScreenState *ss,
+    WindowState *ws,
+    PlayerMovementState *pms
+) {
+    if (!ss->onTransition)
     {
-        case MAIN_MENU:
+        switch (ss->currentScreen)
         {
-            updateMainMenuScreen(gm);
-            
-            if (finishMainMenuScreen())
+            case MAIN_MENU:
             {
-                initIntroScreen();
-                unloadMainMenuScreen();
-            }
-        } break;        
-        case INTRO:
-        {
-            updateIntroScreen(gm);
+                updateMainMenuScreen();
+                
+                if (finishMainMenuScreen())
+                {
+                    initIntroScreen();
+                    TransitionToScreen(ss, INTRO);
+                    unloadMainMenuScreen();
+                }
+            } break;        
+            case INTRO:
+            {
+                updateIntroScreen(ms, pms);
 
-            if (finishIntroScreen())
+                if (finishIntroScreen())
+                {
+                    initEndingScreen();
+                    TransitionToScreen(ss, ENDING);
+                    unloadIntroScreen();
+                }
+            } break;
+            case ENDING:
             {
-                initEndingScreen();
-                unloadIntroScreen();
-            }
-        } break;
-        case ENDING:
-        {
-            if (IsKeyPressed(KEY_ENTER))
-            {
-                // currentScreen = 1;
-                gm.finishGame = true;
-            }
-        } break;
-        default:
-            break;
+                updateEndingScreen();
+
+                if (finishIntroScreen())
+                {
+                    initEndingScreen();
+                    unloadIntroScreen();
+                }
+            } break;
+        }
+    } else UpdateScreenTransition(ss);
+}
+
+//------------------------------------------------------------------------------------
+// Program main entry point
+//------------------------------------------------------------------------------------
+int main(void)
+{
+    // --------------------------------------------------------------------------------------
+    // Game initialization
+    // --------------------------------------------------------------------------------------
+  
+    ResourcesState rs;
+    WindowState ws = {600, 300};
+    MainState ms = {false, false};
+    ScreenState ss = {MAIN_MENU, false};
+    PlayerMovementState pms = {{10, ws.screenHeight / 2 - 50, 25, 100}, 8.0f};
+
+    InitWindow(ws.screenWidth, ws.screenHeight, "Dysphoria - v0.1");
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    InitAudioDevice();
+    SetTargetFPS(60);
+
+    // --------------------------------------------------------------------------------------
+    // Main game loop
+    // --------------------------------------------------------------------------------------
+
+    while (!WindowShouldClose() && !ms.finishGame) // Detect window close button or ESC key
+    {
+        // Update game logic
+        UpdateGame(&ms, &rs, &ss, &ws, &pms);
+        // Draw game logic
+        DrawGame(&ms, &rs, &ss, &ws, &pms);
     }
+
+    // --------------------------------------------------------------------------------------
+    // De-Initialization
+    // --------------------------------------------------------------------------------------
+    CloseAudioDevice();
+    CloseWindow(); // Close window and OpenGL context
+
+    return 0;
 }

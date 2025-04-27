@@ -7,8 +7,8 @@
 // Main Menu Screen Functions Declaration
 //----------------------------------------------------------------------------------
 void initMainMenuScreen(void);
-void updateMainMenuScreen(void);
-void drawMainMenuScreen(WindowState *ws);
+void updateMainMenuScreen(ScreenState *ss);
+void drawMainMenuScreen(WindowState *ws, ResourcesState *rs);
 void unloadMainMenuScreen(void);
 int finishMainMenuScreen(void);
 
@@ -29,6 +29,17 @@ void updateEndingScreen(void);
 void drawEndingScreen(void);
 void unloadEndingScreen(void);
 int finishEndingScreen(void);
+
+
+//----------------------------------------------------------------------------------
+// Options Screen Functions Declaration
+//----------------------------------------------------------------------------------
+void initOptionsScreen(void);
+void updateOptionsScreen(void);
+void drawOptionsScreen(void);
+void unloadOptionsScreen(void);
+int finishOptionsScreen(void);
+
 
 //----------------------------------------------------------------------------------
 // Screen Transitions Functions Declaration

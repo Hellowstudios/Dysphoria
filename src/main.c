@@ -2,10 +2,13 @@
 #include "resourceManager.h"
 #include "gameStateManager.h"
 #include "inputManager.h"
+#include "screens.h"
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 void DrawGame(GameStateManager *gm, ResourceManager *rm, Rectangle *player);
+
 int main(void)
 {
     // Initialization
@@ -23,6 +26,7 @@ int main(void)
 
     // Game manager
     GameStateManager gm = ConstructGameStateManager();
+  
     // Player
     Rectangle player = {10, screenHeight / 2 - 50, 25, 100};
     float playerSpeed = 8.0f;
@@ -30,8 +34,8 @@ int main(void)
     PlayMusicStream(rm.ambient);
 
     // General variables
-
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
+
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -40,45 +44,7 @@ int main(void)
         int screenHeight = GetScreenHeight();
         int screenWidth = GetScreenWidth();
 
-        // Update
-        //----------------------------------------------------------------------------------
-        UpdateMusicStream(rm.ambient);
-
-        switch (gm.currentScreen)
-        {
-        case SCREEN_TITLE:
-        {
-            // Update TITLE screen
-            if (IsKeyPressed(KEY_ENTER))
-            {
-                gm.currentScreen = 1;
-            }
-        }
-        break;
-        case SCREEN_GAMEPLAY:
-        {
-            // Update GAMEPLAY screen
-            if (!gm.pause)
-            {
-                MovePlayer(&player, playerSpeed);
-            }
-            PauseGame(&gm);
-        }
-        break;
-        case SCREEN_ENDING:
-        {
-            // Update ENDING screen
-            if (IsKeyPressed(KEY_ENTER))
-            {
-                // currentScreen = 1;
-                gm.finishGame = true;
-            }
-        }
-        break;
-        default:
-            break;
-        }
-        //----------------------------------------------------------------------------------
+        UpdateGame(&gm, &rm, &player);
         DrawGame(&gm, &rm, &player);
     }
 
@@ -91,6 +57,7 @@ int main(void)
 
     return 0;
 }
+
 void DrawGame(GameStateManager *gm, ResourceManager *rm, Rectangle *player)
 {
     int screenHeight = GetScreenHeight();
@@ -100,36 +67,49 @@ void DrawGame(GameStateManager *gm, ResourceManager *rm, Rectangle *player)
 
     switch (gm->currentScreen)
     {
-    case SCREEN_TITLE:
-    {
-        DrawText("DYSPHORIA", screenWidth / 1.5, screenHeight / 1.5, 30, WHITE);
-        DrawText(TextFormat("Resolution: %ix%i", screenWidth, screenHeight), 10, 10, 20, BLACK);
-    }
-    break;
-    case SCREEN_GAMEPLAY:
-    {
-        DrawTexture(rm->playerTexture, player->x, player->y, WHITE);
-
-        // Draw
-        DrawText(TextFormat("Elapsed Time: %02.02f ms", GetFrameTime() * 1000), 200, 220, 20, WHITE);
-
-        if (gm->pause)
-        {
-            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(WHITE, 0.8f));
-            DrawText("GAME PAUSED", 320, 200, 30, RED);
-        }
-    }
-    break;
-    case SCREEN_ENDING:
-    {
-        // Draw ENDING screen
-        DrawRectangle(0, 0, screenWidth, screenHeight, RED);
-        DrawText("SCREEN ENDING", 10, 10, 30, MAROON);
-    }
-    break;
-    default:
-        break;
+        case MAIN_MENU: drawMainMenuScreen(rm, player); break;
+        case INTRO: drawIntroScreen(rm, player); break;
+        case ENDING: drawEndingScreen(rm, player); break;
     }
 
     EndDrawing();
+}
+
+void UpdateGame(GameStateManager *gm, ResourceManager *rm, Rectangle *player)
+{
+    UpdateMusicStream(rm.ambient);
+
+    switch (gm.currentScreen)
+    {
+        case MAIN_MENU:
+        {
+            updateMainMenuScreen(gm);
+            
+            if (finishMainMenuScreen())
+            {
+                initIntroScreen();
+                unloadMainMenuScreen();
+            }
+        } break;        
+        case INTRO:
+        {
+            updateIntroScreen(gm);
+
+            if (finishIntroScreen())
+            {
+                initEndingScreen();
+                unloadIntroScreen();
+            }
+        } break;
+        case ENDING:
+        {
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                // currentScreen = 1;
+                gm.finishGame = true;
+            }
+        } break;
+        default:
+            break;
+    }
 }

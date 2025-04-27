@@ -58,12 +58,16 @@ elif host_machine.system() == 'emscripten'
 endif
 
 # Project files
-inc_dir = include_directories('src/includes', 'src/includes/utils')
+inc_dir = include_directories(
+  'src/includes', 
+  'src/includes/utils',
+  'src/includes/screens',
+)
 
 sources = files(
   'src/main.c',
   'src/utils/resourceManager.c',
-  'src/gameStateManager.c',
+  'src/utils/gameStateManager.c',
   'src/utils/inputManager.c',
 )
 

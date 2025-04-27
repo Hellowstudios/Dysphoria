@@ -1,9 +1,9 @@
 #include <stdbool.h>
 typedef enum
 {
-    SCREEN_TITLE = 0,
-    SCREEN_GAMEPLAY,
-    SCREEN_ENDING
+    MAIN_MENU = 0,
+    INTRO,
+    ENDING,
 } GameScreen;
 
 typedef struct

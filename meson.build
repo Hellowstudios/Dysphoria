@@ -64,7 +64,6 @@ inc_dir = include_directories(
 )
 
 sources = files(
-    'src/helpers/dialogue.c',
     'src/helpers/player.c',
 
     'src/helpers/save/readGameSaveFile.c',

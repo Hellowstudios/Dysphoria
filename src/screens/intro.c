@@ -23,7 +23,7 @@ void initIntroScreen(ResourcesState *rs)
 void updateIntroScreen(MainState *ms, PlayerMovementState *pms)
 {
     // Update GAMEPLAY screen
-    updatePlayerMovement(ms, pms);
+    UpdatePlayerMovement(ms, pms);
 
     if (IsKeyPressed(KEY_ENTER))
         finishScreen = 1;

@@ -37,6 +37,7 @@ void updateMainMenuScreen(ScreenState *ss) {
         if (IsKeyPressed(KEY_ENTER))
         {
             finishScreen = 1;
+            ss->currentScreen = INTRO;
         }
         
         return;
@@ -45,6 +46,7 @@ void updateMainMenuScreen(ScreenState *ss) {
     if (currentButton == 1) {
         if (IsKeyPressed(KEY_ENTER))
         {
+            finishScreen = 1;
             ss->currentScreen = OPTIONS;
         }
         

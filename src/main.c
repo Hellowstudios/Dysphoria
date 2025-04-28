@@ -6,7 +6,13 @@ void InitilizeResources(
     ResourcesState *rs
 ) {
    rs->playerWalk1Texture = LoadTextureFromImage(LoadImage("resources/img/character/walk1.png"));
-   rs->mainFont = LoadFontEx("resources/fonts/IndieFlower.ttf", 32, 0, 250);
+ 
+   rs->mainFontSm = LoadFontEx("resources/fonts/GloriaHallelujah-Regular.ttf", 40, NULL, 0xFFFF);
+   SetTextureFilter(rs->mainFontSm.texture, TEXTURE_FILTER_BILINEAR); 
+
+   rs->mainFontMd = LoadFontEx("resources/fonts/GloriaHallelujah-Regular.ttf", 120, NULL, 0xFFFF);
+   SetTextureFilter(rs->mainFontMd.texture, TEXTURE_FILTER_BILINEAR);  
+
 }
 
 void DrawGame(
@@ -24,7 +30,7 @@ void DrawGame(
         case MAIN_MENU: drawMainMenuScreen(ws, rs); break;
         case INTRO: drawIntroScreen(rs, ms, pms); break;
         case ENDING: drawEndingScreen(); break;
-        case OPTIONS: drawOptionsScreen(); break;
+        case OPTIONS: drawOptionsScreen(rs); break;
     }
 
     if (ss->onTransition) DrawScreenTransition();
@@ -47,10 +53,11 @@ void UpdateGame(
             {
                 updateMainMenuScreen(ss);
                 
-                if (finishMainMenuScreen())
+                int nextScreen = finishMainMenuScreen();
+                if (nextScreen != -1)
                 {
-                    initIntroScreen();
-                    TransitionToScreen(ss, INTRO);
+                    printf("moving on to the next chapter");
+                    TransitionToScreen(ss, nextScreen);
                     unloadMainMenuScreen();
                 }
             } break; 
@@ -58,10 +65,10 @@ void UpdateGame(
             {
                 updateOptionsScreen();
                 
-                if (finishOptionsScreen())
+                int nextScreen = finishOptionsScreen();
+                if (nextScreen != -1)
                 {
-                    initIntroScreen();
-                    TransitionToScreen(ss, INTRO);
+                    TransitionToScreen(ss, nextScreen);
                     unloadOptionsScreen();
                 }
             } break;        
@@ -69,10 +76,9 @@ void UpdateGame(
             {
                 updateIntroScreen(ms, pms);
 
-                if (finishIntroScreen())
-                {
-                    initEndingScreen();
-                    TransitionToScreen(ss, ENDING);
+                int nextScreen = finishIntroScreen();
+                if (nextScreen != -1)                {
+                    TransitionToScreen(ss, nextScreen);
                     unloadIntroScreen();
                 }
             } break;
@@ -80,10 +86,11 @@ void UpdateGame(
             {
                 updateEndingScreen();
 
-                if (finishIntroScreen())
+                int nextScreen = finishEndingScreen();
+                if (nextScreen != -1)
                 {
-                    initEndingScreen();
-                    unloadIntroScreen();
+                    TransitionToScreen(ss, nextScreen);
+                    unloadEndingScreen();
                 }
             } break;
         }
@@ -109,7 +116,8 @@ int main(void)
         .playerRightWalk1Texture = (Texture){0},
         .playerRightWalk2Texture = (Texture){0},
         .playerRightWalk3Texture = (Texture){0},
-        .mainFont = (Font){0}
+        .mainFontSm = (Font){0},
+        .mainFontMd = (Font){0}
     };
     WindowState ws = {600, 300};
     MainState ms = {false, false};
@@ -127,7 +135,9 @@ int main(void)
     
     printf("INFO: Setting target fps\n");
     SetTargetFPS(60);
-    
+
+    SetExitKey(0);
+
     printf("INFO: Initilizing resources\n");
     InitilizeResources(&rs);
     
@@ -139,7 +149,7 @@ int main(void)
     initMainMenuScreen();
 
     printf("INFO: Started game main loop\n");
-    while (!WindowShouldClose() && !ms.finishGame) // Detect window close button or ESC key
+    while (!ms.finishGame) // Detect window close button or ESC key
     {
         ws.screenWidth = GetScreenWidth();
         ws.screenHeight = GetScreenHeight();

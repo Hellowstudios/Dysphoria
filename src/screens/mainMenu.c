@@ -7,14 +7,11 @@
 //----------------------------------------------------------------------------------
 static int finishScreen;
 static int currentButton = 0;
-static const char* buttonTexts[] = {};
+static const char* buttonTexts[] = {"Start", "Options", "Exit"};
 
 void initMainMenuScreen() {
     // init variables here  
     finishScreen = 0;
-    buttonTexts[0] = "Start";
-    buttonTexts[1] = "Options";
-    buttonTexts[2] = "Exit";
 };
 
 void updateMainMenuScreen(ScreenState *ss) {

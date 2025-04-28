@@ -61,6 +61,8 @@ typedef struct
 
     Font mainFontSm;
     Font mainFontMd;
+    Texture room;
+
 } ResourcesState;
 
 //----------------------------------------------------------------------------------

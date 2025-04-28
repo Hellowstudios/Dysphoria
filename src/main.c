@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "screens.h"
+#include "cameraSystem.h"
 #include <stdio.h>
 
 void InitilizeResources(
@@ -13,27 +14,42 @@ void InitilizeResources(
    rs->mainFontMd = LoadFontEx("resources/fonts/GloriaHallelujah-Regular.ttf", 120, NULL, 0xFFFF);
    SetTextureFilter(rs->mainFontMd.texture, TEXTURE_FILTER_BILINEAR);  
 
-}
+} 
 
 void DrawGame(
     MainState *ms,
     ResourcesState *rs,
     ScreenState *ss,
     WindowState *ws,
-    PlayerMovementState *pms
-) {
+    PlayerMovementState *pms,
+    Camera2D camera)
+{
+
     BeginDrawing();
     ClearBackground(BLACK);
 
     switch (ss->currentScreen)
     {
-        case MAIN_MENU: drawMainMenuScreen(ws, rs); break;
-        case INTRO: drawIntroScreen(rs, ms, pms); break;
-        case ENDING: drawEndingScreen(); break;
-        case OPTIONS: drawOptionsScreen(rs); break;
+    case MAIN_MENU:
+        EndMode2D();
+        drawMainMenuScreen(ws, rs);
+        break;
+    case INTRO:
+        BeginMode2D(camera);
+        drawIntroScreen(rs, ms, pms);
+        break;
+    case ENDING:
+        EndMode2D();
+        drawEndingScreen();
+        break;
+    case OPTIONS:
+        EndMode2D();
+        drawOptionsScreen(rs);
+        break;
     }
 
-    if (ss->onTransition) DrawScreenTransition();
+    if (ss->onTransition)
+        DrawScreenTransition();
 
     EndDrawing();
 }
@@ -43,58 +59,66 @@ void UpdateGame(
     ResourcesState *rs,
     ScreenState *ss,
     WindowState *ws,
-    PlayerMovementState *pms
-) {
+    PlayerMovementState *pms,
+    Camera2D *camera)
+{
     if (!ss->onTransition)
     {
         switch (ss->currentScreen)
         {
             case MAIN_MENU:
             {
-                updateMainMenuScreen(ss);
-                
-                int nextScreen = finishMainMenuScreen();
-                if (nextScreen != -1)
-                {
-                    printf("moving on to the next chapter");
-                    TransitionToScreen(ss, nextScreen);
-                    unloadMainMenuScreen();
-                }
-            } break; 
-            case OPTIONS:
-            {
-                updateOptionsScreen();
-                
-                int nextScreen = finishOptionsScreen();
-                if (nextScreen != -1)
-                {
-                    TransitionToScreen(ss, nextScreen);
-                    unloadOptionsScreen();
-                }
-            } break;        
-            case INTRO:
-            {
-                updateIntroScreen(ms, pms);
+                updateMainMenuScreen(ss, rs);
 
-                int nextScreen = finishIntroScreen();
-                if (nextScreen != -1)                {
-                    TransitionToScreen(ss, nextScreen);
-                    unloadIntroScreen();
-                }
-            } break;
-            case ENDING:
-            {
-                updateEndingScreen();
-
-                int nextScreen = finishEndingScreen();
-                if (nextScreen != -1)
+                if (finishMainMenuScreen())
                 {
-                    TransitionToScreen(ss, nextScreen);
-                    unloadEndingScreen();
-                }
-            } break;
+                    updateMainMenuScreen(ss, rs);
+                    
+                    int nextScreen = finishMainMenuScreen();
+                    if (nextScreen != -1)
+                    {
+                        printf("moving on to the next chapter");
+                        TransitionToScreen(ss, nextScreen);
+                        unloadMainMenuScreen();
+                    }
+                } break; 
+                case OPTIONS:
+                {
+                    updateOptionsScreen();
+                    
+                    int nextScreen = finishOptionsScreen();
+                    if (nextScreen != -1)
+                    {
+                        TransitionToScreen(ss, nextScreen);
+                        unloadOptionsScreen();
+                    }
+                } break;        
+                case INTRO:
+                {
+                    updateIntroScreen(camera,ms, pms);
+
+                    int nextScreen = finishIntroScreen();
+                    if (nextScreen != -1)                {
+                        TransitionToScreen(ss, nextScreen);
+                        unloadIntroScreen(rs);
+                    }
+                } break;
+                case ENDING:
+                {
+                    updateEndingScreen();
+
+                    int nextScreen = finishEndingScreen();
+                    if (nextScreen != -1)
+                    {
+                        TransitionToScreen(ss, nextScreen);
+                        unloadEndingScreen();
+                    }
+                } break;
+            }
         }
-    } else UpdateScreenTransition(ss);
+    }
+    else 
+        UpdateScreenTransition(ss);
 }
 
 //------------------------------------------------------------------------------------
@@ -120,10 +144,12 @@ int main(void)
         .mainFontMd = (Font){0}
     };
     WindowState ws = {600, 300};
+
     MainState ms = {false, false};
     ScreenState ss = {MAIN_MENU, false};
     PlayerMovementState pms = {{10, ws.screenHeight / 2 - 50, 25, 100}, 8.0f};
-
+    Camera2D camera = InitCamera(ws.screenWidth, ws.screenHeight, &pms);
+    
     printf("INFO: Setting config flags\n");
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 
@@ -154,9 +180,9 @@ int main(void)
         ws.screenWidth = GetScreenWidth();
         ws.screenHeight = GetScreenHeight();
         // Update game logic
-        UpdateGame(&ms, &rs, &ss, &ws, &pms);
+        UpdateGame(&ms, &rs, &ss, &ws, &pms, &camera);
         // Draw game logic
-        DrawGame(&ms, &rs, &ss, &ws, &pms);
+        DrawGame(&ms, &rs, &ss, &ws, &pms,camera);
     }
 
     // --------------------------------------------------------------------------------------

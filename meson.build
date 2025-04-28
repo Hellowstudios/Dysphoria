@@ -81,7 +81,6 @@ sources = files(
 
   'src/helpers/save/readGameSaveFile.c',
   'src/helpers/save/writeGameSaveFile.c',
-  'src/helpers/player.c',
 )
 
 executable(

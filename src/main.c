@@ -66,57 +66,58 @@ void UpdateGame(
     {
         switch (ss->currentScreen)
         {
-        case MAIN_MENU:
-        {
-            updateMainMenuScreen();
+            case MAIN_MENU:
+            {
+                updateMainMenuScreen(ss, rs);
 
-            if (finishMainMenuScreen())
-            {
-                updateMainMenuScreen(ss);
-                
-                int nextScreen = finishMainMenuScreen();
-                if (nextScreen != -1)
+                if (finishMainMenuScreen())
                 {
-                    printf("moving on to the next chapter");
-                    TransitionToScreen(ss, nextScreen);
-                    unloadMainMenuScreen();
-                }
-            } break; 
-            case OPTIONS:
-            {
-                updateOptionsScreen();
-                
-                int nextScreen = finishOptionsScreen();
-                if (nextScreen != -1)
+                    updateMainMenuScreen(ss, rs);
+                    
+                    int nextScreen = finishMainMenuScreen();
+                    if (nextScreen != -1)
+                    {
+                        printf("moving on to the next chapter");
+                        TransitionToScreen(ss, nextScreen);
+                        unloadMainMenuScreen();
+                    }
+                } break; 
+                case OPTIONS:
                 {
-                    TransitionToScreen(ss, nextScreen);
-                    unloadOptionsScreen();
-                }
-            } break;        
-            case INTRO:
-            {
-                updateIntroScreen(ms, pms);
+                    updateOptionsScreen();
+                    
+                    int nextScreen = finishOptionsScreen();
+                    if (nextScreen != -1)
+                    {
+                        TransitionToScreen(ss, nextScreen);
+                        unloadOptionsScreen();
+                    }
+                } break;        
+                case INTRO:
+                {
+                    updateIntroScreen(camera,ms, pms);
 
-                int nextScreen = finishIntroScreen();
-                if (nextScreen != -1)                {
-                    TransitionToScreen(ss, nextScreen);
-                    unloadIntroScreen();
-                }
-            } break;
-            case ENDING:
-            {
-                updateEndingScreen();
-
-                int nextScreen = finishEndingScreen();
-                if (nextScreen != -1)
+                    int nextScreen = finishIntroScreen();
+                    if (nextScreen != -1)                {
+                        TransitionToScreen(ss, nextScreen);
+                        unloadIntroScreen(rs);
+                    }
+                } break;
+                case ENDING:
                 {
-                    TransitionToScreen(ss, nextScreen);
-                    unloadEndingScreen();
-                }
-            } break;
+                    updateEndingScreen();
+
+                    int nextScreen = finishEndingScreen();
+                    if (nextScreen != -1)
+                    {
+                        TransitionToScreen(ss, nextScreen);
+                        unloadEndingScreen();
+                    }
+                } break;
+            }
         }
     }
-    else
+    else 
         UpdateScreenTransition(ss);
 }
 
@@ -143,11 +144,6 @@ int main(void)
         .mainFontMd = (Font){0}
     };
     WindowState ws = {600, 300};
-    InitWindow(ws.screenWidth, ws.screenHeight, "Dysphoria - v0.1");
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitAudioDevice();
-
-    ResourcesState rs;
 
     MainState ms = {false, false};
     ScreenState ss = {MAIN_MENU, false};

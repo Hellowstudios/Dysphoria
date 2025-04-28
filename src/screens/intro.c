@@ -13,7 +13,6 @@ static int toScreen = -1;
 void initIntroScreen(ResourcesState *rs)
 {
     // init variables here
-    finishScreen = 0;
     Image playerImage1 = LoadImage("resources/img/character/walk1.png");
     Image playerImage2 = LoadImage("resources/img/character/walk2.png");
     Image roomImage = LoadImage("resources/img/objects/wood-planks.png");

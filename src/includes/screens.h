@@ -7,7 +7,7 @@
 // Main Menu Screen Functions Declaration
 //----------------------------------------------------------------------------------
 void initMainMenuScreen(void);
-void updateMainMenuScreen(ScreenState *ss);
+void updateMainMenuScreen(ScreenState *ss, ResourcesState *rs);
 void drawMainMenuScreen(WindowState *ws, ResourcesState *rs);
 void unloadMainMenuScreen(void);
 int finishMainMenuScreen(void);

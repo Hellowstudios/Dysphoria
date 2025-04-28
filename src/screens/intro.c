@@ -6,18 +6,20 @@
 //----------------------------------------------------------------------------------
 // Global Variables Definition (local to this module)
 //----------------------------------------------------------------------------------
-static int finishScreen;
+// Defines the next screen to go to
+static int toScreen = -1;
 
 void initIntroScreen() {
-    // init variables here
-    finishScreen = 0;
 };
 
 void updateIntroScreen(MainState *ms, PlayerMovementState *pms) {
     // Update GAMEPLAY screen
     updatePlayerMovement(ms, pms);
 
-    if (IsKeyPressed(KEY_ENTER)) finishScreen = 1;
+    if (IsKeyPressed(KEY_ENTER)) {
+        initEndingScreen();
+        toScreen = ENDING;
+    }
 };
 
 void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms)
@@ -37,5 +39,5 @@ void unloadIntroScreen()
 
 int finishIntroScreen()
 {
-    return finishScreen;
+    return toScreen;
 };

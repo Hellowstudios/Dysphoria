@@ -1,121 +1,106 @@
 #include "raylib.h"
 #include "states.h"
 #include <stdio.h>
+#include "screens.h"
 
 //----------------------------------------------------------------------------------
-// Global Variables Definition (local to this module)
+// Constants
 //----------------------------------------------------------------------------------
-static int finishScreen;
+#define TITLE_FONT_SIZE 100
+#define BUTTON_FONT_SIZE 40
+#define BUTTON_WIDTH 300
+#define BUTTON_HEIGHT 60
+#define BUTTON_SPACING 80
+#define TITLE_Y_POSITION 100
+#define BUTTONS_START_Y 300
+
+static int toScreen = -1;
 static int currentButton = 0;
-static const char* buttonTexts[] = {};
+static const char* buttonTexts[3] = {
+    "Start",
+    "Options", 
+    "Exit"
+};
 
 void initMainMenuScreen() {
-    // init variables here  
-    finishScreen = 0;
-    buttonTexts[0] = "Start";
-    buttonTexts[1] = "Options";
-    buttonTexts[2] = "Exit";
-};
+    toScreen = -1;
+    currentButton = 0;
+}
 
 void updateMainMenuScreen(ScreenState *ss) {
-        // Update TITLE screen
-       
+    if (toScreen != -1) return;
+    // Menu navigation
     if (IsKeyPressed(KEY_DOWN)) {
-        currentButton++;
-        if (currentButton > 2) currentButton = 0;
-        return;
+        currentButton = (currentButton + 1) % 3;
     }
-
-    if (IsKeyPressed(KEY_UP)) {
-        currentButton--;
-        if (currentButton < 0) currentButton = 2;
-
-        return;
-    }
-
-    if (currentButton == 0) {
-        if (IsKeyPressed(KEY_ENTER))
-        {
-            finishScreen = 1;
-        }
-        
-        return;
+    else if (IsKeyPressed(KEY_UP)) {
+        currentButton = (currentButton - 1 + 3) % 3;
     }
     
-    if (currentButton == 1) {
-        if (IsKeyPressed(KEY_ENTER))
-        {
-            ss->currentScreen = OPTIONS;
+    // Button actions
+    if (IsKeyPressed(KEY_ENTER)) {
+        switch(currentButton) {
+            case 0:
+                initIntroScreen();
+                toScreen = INTRO;
+                break;
+            case 1:
+                initOptionsScreen();
+                toScreen = OPTIONS;
+                break;
+            case 2:
+                CloseWindow();
+                break;
         }
-        
-        return;
     }
-        
+}
 
-    if (currentButton == 2) {
-        if (IsKeyPressed(KEY_ENTER))
-        {
-            CloseWindow();
-        }
-        
-        return;
-    }
-       
-};
-
-void drawMainMenuScreen(WindowState *ws, ResourcesState *rs)
-{
+void drawMainMenuScreen(WindowState *ws, ResourcesState *rs) {
+    // Clear background
     DrawRectangle(0, 0, ws->screenWidth, ws->screenHeight, WHITE);
-
-    const char* text = "Dysphoria";
-    int fontSize = 80;
-    int textWidth = MeasureTextEx(rs->mainFont, text, fontSize, 2).x;
-
-    DrawTextEx(rs->mainFont, text, (Vector2){(ws->screenWidth - textWidth) / 2, 50}, fontSize, 2, BLACK);
-
-    for (size_t i = 0; i < 3; i++)
-    {
-        Rectangle rec = {
-            (ws->screenWidth - 200) / 2,
-            150 + (i * 50),
-            currentButton == i ? 197 : 200,
-            currentButton == i ? 37 : 40
+    
+    // Draw title
+    const char* titleText = "Dysphoria";
+    Vector2 titleSize = MeasureTextEx(rs->mainFontMd, titleText, TITLE_FONT_SIZE, 2);
+    Vector2 titlePos = {
+        (ws->screenWidth - titleSize.x) / 2,
+        TITLE_Y_POSITION
+    };
+    DrawTextEx(rs->mainFontMd, titleText, titlePos, TITLE_FONT_SIZE, 2, BLACK);
+    
+    // Draw buttons
+    for (int i = 0; i < 3; i++) {
+        // Calculate button position
+        Rectangle buttonRect = {
+            (ws->screenWidth - BUTTON_WIDTH) / 2,
+            BUTTONS_START_Y + (i * BUTTON_SPACING),
+            currentButton == i ? BUTTON_WIDTH - 3 : BUTTON_WIDTH,
+            currentButton == i ? BUTTON_HEIGHT - 3 : BUTTON_HEIGHT
         };
-
-        DrawRectangleRec(
-            rec,
-            currentButton == i ? WHITE : BLACK
-        );
-
-        DrawRectangleLinesEx(
-            rec,
-            3,
-            currentButton == i ? BLACK : WHITE
-        );
-
-        // Draw the text
-        int buttonFontSize = 30;
-        Vector2 textSize = MeasureTextEx(rs->mainFont, buttonTexts[i], buttonFontSize, 2);
-        Vector2 textPosition = {
-            rec.x + (rec.width - textSize.x) / 2,  // Center horizontally
-            rec.y + (rec.height - textSize.y) / 2  // Center vertically
+        
+        // Draw button background
+        Color bgColor = currentButton == i ? WHITE : BLACK;
+        Color borderColor = currentButton == i ? BLACK : WHITE;
+        Color textColor = currentButton == i ? BLACK : WHITE;
+        
+        DrawRectangleRec(buttonRect, bgColor);
+        DrawRectangleLinesEx(buttonRect, 3, borderColor);
+        
+        // Draw button text
+        Vector2 textSize = MeasureTextEx(rs->mainFontSm, buttonTexts[i], BUTTON_FONT_SIZE, 2);
+        Vector2 textPos = {
+            buttonRect.x + (buttonRect.width - textSize.x) / 2,
+            buttonRect.y + (buttonRect.height - textSize.y) / 2
         };
-
-        DrawTextEx(
-            rs->mainFont,
-            buttonTexts[i],
-            textPosition,
-            buttonFontSize,
-            2,
-            currentButton == i ? BLACK : WHITE
-        );
+        
+        DrawTextEx(rs->mainFontSm, buttonTexts[i], textPos, BUTTON_FONT_SIZE, 2, textColor);
     }
 }
-void unloadMainMenuScreen()
-{
+
+void unloadMainMenuScreen() {
+    // Nothing to unload
 }
 
-int finishMainMenuScreen()
-{
-    return finishScreen;
+int finishMainMenuScreen() {
+    return toScreen;
 }

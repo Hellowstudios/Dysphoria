@@ -59,7 +59,8 @@ typedef struct
     Texture playerRightWalk2Texture;
     Texture playerRightWalk3Texture;
 
-    Font mainFont;
+    Font mainFontSm;
+    Font mainFontMd;
 } ResourcesState;
 
 //----------------------------------------------------------------------------------

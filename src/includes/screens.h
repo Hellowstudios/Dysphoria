@@ -36,7 +36,7 @@ int finishEndingScreen(void);
 //----------------------------------------------------------------------------------
 void initOptionsScreen(void);
 void updateOptionsScreen(void);
-void drawOptionsScreen(void);
+void drawOptionsScreen(ResourcesState *rs);
 void unloadOptionsScreen(void);
 int finishOptionsScreen(void);
 

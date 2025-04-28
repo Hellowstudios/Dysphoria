@@ -37,7 +37,6 @@ void updateMainMenuScreen(ScreenState *ss) {
         if (IsKeyPressed(KEY_ENTER))
         {
             finishScreen = 1;
-            ss->currentScreen = INTRO;
         }
         
         return;

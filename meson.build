@@ -61,6 +61,7 @@ endif
 inc_dir = include_directories(
   'src/includes',
   'src/includes/helpers',
+  'src/includes/gameplay',
 )
 
 sources = files(
@@ -69,6 +70,7 @@ sources = files(
   'src/helpers/save/readGameSaveFile.c',
   'src/helpers/save/writeGameSaveFile.c',
   'src/main.c',
+  'src/gameplay/cameraSystem.c',
 
   'src/screens/ending.c',
   'src/screens/intro.c',

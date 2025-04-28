@@ -16,7 +16,7 @@ int finishMainMenuScreen(void);
 // Intro Screen Functions Declaration
 //----------------------------------------------------------------------------------
 void initIntroScreen(ResourcesState *rs);
-void updateIntroScreen(MainState *ms, PlayerMovementState *pms);
+void updateIntroScreen(Camera2D *camera, MainState *ms, PlayerMovementState *pms);
 void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms);
 void unloadIntroScreen(ResourcesState *rs);
 int finishIntroScreen(void);

@@ -49,6 +49,7 @@ typedef struct
 {
     Texture playerWalk1Texture;
     Texture playerWalk2Texture;
+    Texture room;
 } ResourcesState;
 
 //----------------------------------------------------------------------------------

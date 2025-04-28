@@ -2,6 +2,7 @@
 #include "screens.h"
 #include "states.h"
 #include "player.h"
+#include "cameraSystem.h"
 
 //----------------------------------------------------------------------------------
 // Global Variables Definition (local to this module)
@@ -14,25 +15,28 @@ void initIntroScreen(ResourcesState *rs)
     finishScreen = 0;
     Image playerImage1 = LoadImage("resources/img/character/walk1.png");
     Image playerImage2 = LoadImage("resources/img/character/walk2.png");
+    Image roomImage = LoadImage("resources/img/objects/wood-planks.png");
     rs->playerWalk1Texture = LoadTextureFromImage(playerImage1);
     rs->playerWalk2Texture = LoadTextureFromImage(playerImage2);
+    rs->room = LoadTextureFromImage(roomImage);
     UnloadImage(playerImage1);
     UnloadImage(playerImage2);
+    UnloadImage(roomImage);
 };
-
-void updateIntroScreen(MainState *ms, PlayerMovementState *pms)
+void updateIntroScreen(Camera2D *camera, MainState *ms, PlayerMovementState *pms)
 {
     // Update GAMEPLAY screen
     UpdatePlayerMovement(ms, pms);
-
+    UpdateaCamera(camera,pms);
     if (IsKeyPressed(KEY_ENTER))
         finishScreen = 1;
 };
 
+
 void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms)
 {
+    DrawTexture(rs->room, 0, 0, WHITE);
     DrawTexture(rs->playerWalk1Texture, pms->player.x, pms->player.y, WHITE);
-
     if (ms->pause)
     {
         DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(WHITE, 0.8f));

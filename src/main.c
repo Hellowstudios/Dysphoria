@@ -1,12 +1,14 @@
 #include "raylib.h"
 #include "screens.h"
+#include "cameraSystem.h"
 
 void DrawGame(
     MainState *ms,
     ResourcesState *rs,
     ScreenState *ss,
     WindowState *ws,
-    PlayerMovementState *pms)
+    PlayerMovementState *pms,
+    Camera2D camera)
 {
     // int screenHeight = GetScreenHeight();
     // int screenWidth = GetScreenWidth();
@@ -16,12 +18,15 @@ void DrawGame(
     switch (ss->currentScreen)
     {
     case MAIN_MENU:
+        EndMode2D();
         drawMainMenuScreen(ws);
         break;
     case INTRO:
+        BeginMode2D(camera);
         drawIntroScreen(rs, ms, pms);
         break;
     case ENDING:
+        EndMode2D();
         drawEndingScreen();
         break;
     }
@@ -37,7 +42,8 @@ void UpdateGame(
     ResourcesState *rs,
     ScreenState *ss,
     WindowState *ws,
-    PlayerMovementState *pms)
+    PlayerMovementState *pms,
+    Camera2D *camera)
 {
     if (!ss->onTransition)
     {
@@ -57,7 +63,7 @@ void UpdateGame(
         break;
         case INTRO:
         {
-            updateIntroScreen(ms, pms);
+            updateIntroScreen(camera,ms, pms);
 
             if (finishIntroScreen())
             {
@@ -102,6 +108,8 @@ int main(void)
     MainState ms = {false, false};
     ScreenState ss = {MAIN_MENU, false};
     PlayerMovementState pms = {{10, ws.screenHeight / 2 - 50, 25, 100}, 8.0f};
+    Camera2D camera = InitCamera(ws.screenWidth, ws.screenHeight, &pms);
+    
 
     SetTargetFPS(60);
 
@@ -112,9 +120,9 @@ int main(void)
     while (!WindowShouldClose() && !ms.finishGame) // Detect window close button or ESC key
     {
         // Update game logic
-        UpdateGame(&ms, &rs, &ss, &ws, &pms);
+        UpdateGame(&ms, &rs, &ss, &ws, &pms, &camera);
         // Draw game logic
-        DrawGame(&ms, &rs, &ss, &ws, &pms);
+        DrawGame(&ms, &rs, &ss, &ws, &pms,camera);
     }
 
     // --------------------------------------------------------------------------------------

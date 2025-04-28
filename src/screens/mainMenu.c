@@ -26,6 +26,7 @@ void initMainMenuScreen() {
     toScreen = -1;
     currentButton = 0;
 }
+
 void updateMainMenuScreen(ScreenState *ss) {
     if (toScreen != -1) return;
     // Menu navigation

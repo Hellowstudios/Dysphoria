@@ -26,7 +26,6 @@ void initMainMenuScreen() {
     toScreen = -1;
     currentButton = 0;
 }
-
 void updateMainMenuScreen(ScreenState *ss) {
     if (toScreen != -1) return;
     // Menu navigation
@@ -37,6 +36,7 @@ void updateMainMenuScreen(ScreenState *ss) {
         currentButton = (currentButton - 1 + 3) % 3;
     }
     
+
     // Button actions
     if (IsKeyPressed(KEY_ENTER)) {
         switch(currentButton) {

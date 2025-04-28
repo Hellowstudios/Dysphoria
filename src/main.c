@@ -24,7 +24,7 @@ void DrawGame(
         case MAIN_MENU: drawMainMenuScreen(ws, rs); break;
         case INTRO: drawIntroScreen(rs, ms, pms); break;
         case ENDING: drawEndingScreen(); break;
-        case OPTIONS: drawEndingScreen(); break;
+        case OPTIONS: drawOptionsScreen(); break;
     }
 
     if (ss->onTransition) DrawScreenTransition();

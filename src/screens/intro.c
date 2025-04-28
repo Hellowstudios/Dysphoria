@@ -7,7 +7,8 @@
 //----------------------------------------------------------------------------------
 // Global Variables Definition (local to this module)
 //----------------------------------------------------------------------------------
-static int finishScreen;
+// Defines the next screen to go to
+static int toScreen = -1;
 
 void initIntroScreen(ResourcesState *rs)
 {
@@ -28,8 +29,11 @@ void updateIntroScreen(Camera2D *camera, MainState *ms, PlayerMovementState *pms
     // Update GAMEPLAY screen
     UpdatePlayerMovement(ms, pms);
     UpdateaCamera(camera,pms);
-    if (IsKeyPressed(KEY_ENTER))
-        finishScreen = 1;
+
+    if (IsKeyPressed(KEY_ENTER)) {
+        initEndingScreen();
+        toScreen = ENDING;
+    }
 };
 
 
@@ -52,5 +56,5 @@ void unloadIntroScreen(ResourcesState *rs)
 
 int finishIntroScreen()
 {
-    return finishScreen;
+    return toScreen;
 };

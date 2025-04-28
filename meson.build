@@ -76,6 +76,12 @@ sources = files(
   'src/screens/intro.c',
   'src/screens/mainMenu.c',
   'src/screens/transition.c',
+  
+  'src/screens/options.c',
+
+  'src/helpers/save/readGameSaveFile.c',
+  'src/helpers/save/writeGameSaveFile.c',
+  'src/helpers/player.c',
 )
 
 executable(

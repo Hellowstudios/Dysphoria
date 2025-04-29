@@ -2,6 +2,7 @@
 #include "states.h"
 #include <stdio.h>
 #include "screens.h"
+#include "utils.h"
 
 //----------------------------------------------------------------------------------
 // Constants
@@ -27,7 +28,7 @@ void initMainMenuScreen() {
     currentButton = 0;
 }
 
-void updateMainMenuScreen(ScreenState *ss) {
+void updateMainMenuScreen(ScreenState *ss,SettingsFile *sf) {
     if (toScreen != -1) return;
     // Menu navigation
     if (IsKeyPressed(KEY_DOWN)) {
@@ -46,11 +47,11 @@ void updateMainMenuScreen(ScreenState *ss) {
                 toScreen = INTRO;
                 break;
             case 1:
-                initOptionsScreen();
+                initOptionsScreen(sf);
                 toScreen = OPTIONS;
                 break;
             case 2:
-                CloseWindow();
+                closeWindow(sf);
                 break;
         }
     }

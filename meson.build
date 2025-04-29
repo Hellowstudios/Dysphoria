@@ -58,9 +58,11 @@ elif host_machine.system() == 'emscripten'
 endif
 
 # Project files
+
 inc_dir = include_directories(
   'src/includes', 
   'src/includes/helpers',
+  'src/includes/utils',
 )
 
 sources = files(
@@ -72,9 +74,14 @@ sources = files(
   'src/screens/transition.c',
   'src/screens/options.c',
 
-  'src/helpers/save/readGameSaveFile.c',
-  'src/helpers/save/writeGameSaveFile.c',
+  'src/helpers/writeSettingsFile.c',
+  'src/helpers/readSettingsFile.c',
   'src/helpers/player.c',
+
+  'src/utils/closeWindow.c',
+  'src/utils/getDysphoriaDir.c',
+  'src/utils/getSettingsFilePath.c',
+  'src/utils/jsonc.c',
 )
 
 executable(

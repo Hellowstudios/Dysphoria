@@ -1,6 +1,8 @@
 #include "raylib.h"
 #include "screens.h"
 #include <stdio.h>
+#include "utils.h"
+#include "helpers.h"
 
 void InitilizeResources(
     ResourcesState *rs
@@ -43,7 +45,8 @@ void UpdateGame(
     ResourcesState *rs,
     ScreenState *ss,
     WindowState *ws,
-    PlayerMovementState *pms
+    PlayerMovementState *pms,
+    SettingsFile *sf
 ) {
     if (!ss->onTransition)
     {
@@ -51,19 +54,18 @@ void UpdateGame(
         {
             case MAIN_MENU:
             {
-                updateMainMenuScreen(ss);
+                updateMainMenuScreen(ss, sf);
                 
                 int nextScreen = finishMainMenuScreen();
                 if (nextScreen != -1)
                 {
-                    printf("moving on to the next chapter");
                     TransitionToScreen(ss, nextScreen);
                     unloadMainMenuScreen();
                 }
             } break; 
             case OPTIONS:
             {
-                updateOptionsScreen();
+                updateOptionsScreen(sf);
                 
                 int nextScreen = finishOptionsScreen();
                 if (nextScreen != -1)
@@ -119,12 +121,14 @@ int main(void)
         .mainFontSm = (Font){0},
         .mainFontMd = (Font){0}
     };
+    printf("INFO: Reading settings file\n");
+    SettingsFile* sf = readSettingsFile();
     WindowState ws = {600, 300};
     MainState ms = {false, false};
     ScreenState ss = {MAIN_MENU, false};
     PlayerMovementState pms = {{10, ws.screenHeight / 2 - 50, 25, 100}, 8.0f};
 
-    printf("INFO: Setting config flags\n");
+    printf("INFO: Setting config flag FLAG_WINDOW_RESIZABLE\n");
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 
     printf("INFO: Initilizing window\n");
@@ -134,7 +138,7 @@ int main(void)
     InitAudioDevice();
     
     printf("INFO: Setting target fps\n");
-    SetTargetFPS(60);
+    SetTargetFPS(sf->fps);
 
     SetExitKey(0);
 
@@ -154,7 +158,7 @@ int main(void)
         ws.screenWidth = GetScreenWidth();
         ws.screenHeight = GetScreenHeight();
         // Update game logic
-        UpdateGame(&ms, &rs, &ss, &ws, &pms);
+        UpdateGame(&ms, &rs, &ss, &ws, &pms, sf);
         // Draw game logic
         DrawGame(&ms, &rs, &ss, &ws, &pms);
     }
@@ -162,8 +166,7 @@ int main(void)
     // --------------------------------------------------------------------------------------
     // De-Initialization
     // --------------------------------------------------------------------------------------
-    CloseAudioDevice();
-    CloseWindow(); // Close window and OpenGL context
+    closeWindow(sf);
 
     return 0;
 }

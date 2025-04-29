@@ -57,6 +57,7 @@ dkms.conf
 [R]elease/
 [Rr]elease.DLL/
 .vs
+.vscode/launch.json
 
 # Build folder
 [Bb]uild

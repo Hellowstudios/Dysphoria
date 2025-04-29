@@ -19,7 +19,7 @@ static int currentLanguage = 0;
 static const int fpsList[] = { 30, 60, 120 };
 static int currentFps = 1;  // Default to 60 FPS (index 1)
 static Vector2 mousePoint;
-static int selectedButton = -1;
+static int selectedButton = 0;
 
 void initOptionsScreen(SettingsFile *sf) {
     toScreen = -1;
@@ -96,34 +96,43 @@ void updateOptionsScreen(SettingsFile *sf) {
 }
 
 void drawOptionsScreen(ResourcesState *rs) {
+    int screenWidth = GetScreenWidth();
+    int centerX = screenWidth/2;
+    const int SPACING = 50;  // Increased spacing between label and value
+
+    // Center "OPTIONS" title
     DrawTextEx(rs->mainFontSm, "OPTIONS", 
-        (Vector2){ GetScreenWidth()/2 - MeasureTextEx(rs->mainFontSm, "OPTIONS", 80, 2).x/2, 150 }, 
-        80, 2, WHITE);  // Font size doubled from 40 to 80
+        (Vector2){ centerX - MeasureTextEx(rs->mainFontSm, "OPTIONS", 80, 2).x/2, 150 }, 
+        80, 2, WHITE);
     
-    // Draw language option
-    DrawRectangleRec(languageButton, (Color){ 0, 0, 0, 0 });
-   
+    // Center language option
+    float labelWidth = MeasureTextEx(rs->mainFontSm, "Language:", 40, 2).x;
+    float valueWidth = MeasureTextEx(rs->mainFontSm, languages[currentLanguage], selectedButton == 0 ? 50 : 40, 2).x;
+    float totalWidth = labelWidth + SPACING + valueWidth; // Increased spacing
+    
     DrawTextEx(rs->mainFontSm, "Language:", 
-        (Vector2){ languageButton.x - 150, 
-        languageButton.y + 10 }, 
+        (Vector2){ centerX - totalWidth/2, languageButton.y + 10 }, 
         40, 2,
         WHITE
     ); 
    
     DrawTextEx(
         rs->mainFontSm, languages[currentLanguage], 
-        (Vector2){ languageButton.x + 20, languageButton.y + 10 }, 
+        (Vector2){ centerX - totalWidth/2 + labelWidth + SPACING, languageButton.y + 10 }, 
         selectedButton == 0 ? 50 : 40, 
         2,
         selectedButton == 0 ? NOT_FOCUSED_BUTTON_COLOR : FOCUSED_BUTTON_COLOR
     ); 
     
-    // Draw FPS option
-    DrawRectangleRec(fpsButton, (Color){ 0, 0, 0, 0 });
+    // Center FPS option
+    labelWidth = MeasureTextEx(rs->mainFontSm, "FPS:", 40, 2).x;
+    valueWidth = MeasureTextEx(rs->mainFontSm, TextFormat("%d", fpsList[currentFps]), selectedButton == 1 ? 50 : 40, 2).x;
+    totalWidth = labelWidth + SPACING + valueWidth;
+
     DrawTextEx(
         rs->mainFontSm,
         "FPS:", 
-        (Vector2){ fpsButton.x - 150, fpsButton.y + 10 }, 
+        (Vector2){ centerX - totalWidth/2, fpsButton.y + 10 }, 
         40, 
         2,
         WHITE
@@ -131,17 +140,18 @@ void drawOptionsScreen(ResourcesState *rs) {
 
     DrawTextEx(
         rs->mainFontSm, TextFormat("%d", fpsList[currentFps]), 
-        (Vector2){ fpsButton.x + 20, fpsButton.y + 10 }, 
+        (Vector2){ centerX - totalWidth/2 + labelWidth + SPACING, fpsButton.y + 10 }, 
         selectedButton == 1 ? 50 : 40, 
         2,
         selectedButton == 1 ? NOT_FOCUSED_BUTTON_COLOR : FOCUSED_BUTTON_COLOR
     ); 
 
-
+    // Center "Press ESC to return" text
     DrawTextEx(rs->mainFontSm, "Press ESC to return",
-        (Vector2){ GetScreenWidth()/2 - MeasureTextEx(rs->mainFontSm, "Press ESC to return", 40, 2).x/2, 470 },
+        (Vector2){ centerX - MeasureTextEx(rs->mainFontSm, "Press ESC to return", 40, 2).x/2, 470 },
         40, 2, GRAY); 
 }
+
 void unloadOptionsScreen() {
     // Nothing to unload
 }

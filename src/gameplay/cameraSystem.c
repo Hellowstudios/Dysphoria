@@ -12,8 +12,10 @@ Camera2D InitCamera(int screenWidth, int screenHeight, PlayerMovementState *pms)
     camera.rotation = 0.0f;
     return camera;
 }
-void UpdateaCamera(Camera2D *camera, PlayerMovementState *pms)   
+
+void UpdateGameCamera(Camera2D *camera, PlayerMovementState *pms)   
 {
     camera->target = (Vector2){pms->player.x + 20, pms->player.y + 20};
 }
+
 #endif

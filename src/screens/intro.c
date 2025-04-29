@@ -2,7 +2,7 @@
 #include "screens.h"
 #include "states.h"
 #include "player.h"
-#include "cameraSystem.h"
+#include "camerasystem.h"
 
 //----------------------------------------------------------------------------------
 // Global Variables Definition (local to this module)
@@ -27,7 +27,7 @@ void updateIntroScreen(Camera2D *camera, MainState *ms, PlayerMovementState *pms
 {
     // Update GAMEPLAY screen
     UpdatePlayerMovement(ms, pms);
-    UpdateaCamera(camera,pms);
+    UpdateGameCamera(camera,pms);
 
     if (IsKeyPressed(KEY_ENTER)) {
         initEndingScreen();

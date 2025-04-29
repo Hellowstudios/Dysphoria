@@ -77,7 +77,6 @@ typedef struct
 //----------------------------------------------------------------------------------
 // Game save file data
 //----------------------------------------------------------------------------------
-extern const char gameSaveFilePath[]; // Declaration only
 
 typedef struct
 {
@@ -85,6 +84,20 @@ typedef struct
     unsigned hour : 5;   // 0-23 range
     unsigned minute : 6; // 0-59 range
 } SaveFile;
+
+
+
+//----------------------------------------------------------------------------------
+// Game save file data
+//----------------------------------------------------------------------------------
+typedef struct
+{   
+    unsigned short fileVersion;
+    unsigned short musicVolume; 
+    unsigned short soundVolume; 
+    unsigned short language; 
+    unsigned short fps;  
+} SettingsFile;
 
 
 

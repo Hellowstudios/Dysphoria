@@ -3,6 +3,7 @@
 #include "states.h"
 #include <stddef.h>
 #include <stdio.h>
+#include "helpers.h"
 
 //----------------------------------------------------------------------------------
 // Global Variables Definition (local to this module)
@@ -20,15 +21,32 @@ static int currentFps = 1;  // Default to 60 FPS (index 1)
 static Vector2 mousePoint;
 static int selectedButton = -1;
 
-void initOptionsScreen() {
+void initOptionsScreen(SettingsFile *sf) {
     toScreen = -1;
-    
+
+    switch (sf->fps)
+    {
+    case 30:
+        currentFps = 0;
+        break;
+    case 60:
+        currentFps = 1;
+        break;
+    case 120:
+        currentFps = 2;
+        break;
+    default:
+        break;
+    }
+
+    currentLanguage = sf->language;
+
     // Initialize button positions and sizes - centered
     languageButton = (Rectangle){ GetScreenWidth()/2 - 100, 250, 200, 50 };  // Adjusted for better spacing
     fpsButton = (Rectangle){ GetScreenWidth()/2 - 100, 320, 200, 50 };  // Adjusted for better spacing
 }
 
-void updateOptionsScreen() {
+void updateOptionsScreen(SettingsFile *sf) {
     if (toScreen != -1) return;
     mousePoint = GetMousePosition();
     
@@ -51,10 +69,14 @@ void updateOptionsScreen() {
     if (IsKeyPressed(KEY_ENTER)) {
         if (selectedButton == 0) {
             currentLanguage = (currentLanguage + 1) % 2;
+            sf->language = currentLanguage;
+            writeSettingsFile(sf);
         }
         if (selectedButton == 1) {
             currentFps = (currentFps + 1) % 3;
             SetTargetFPS(fpsList[currentFps]);
+            sf->fps = fpsList[currentFps];
+            writeSettingsFile(sf);
         }
     }
 

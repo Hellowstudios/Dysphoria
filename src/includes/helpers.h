@@ -3,6 +3,7 @@
 
 #include "states.h"
 
+void InitilizeResources(ResourcesState *rs);
 void updatePlayerMovement(MainState *ms, PlayerMovementState *pms);
 void writeSettingsFile(SettingsFile *newSettingsFile);
 SettingsFile *readSettingsFile(void);

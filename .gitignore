@@ -57,6 +57,10 @@ dkms.conf
 [R]elease/
 [Rr]elease.DLL/
 .vs
+<<<<<<< HEAD
+=======
+.vscode/c_cpp_properties.json
+>>>>>>> main
 .vscode/launch.json
 
 # Build folder

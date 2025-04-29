@@ -28,7 +28,7 @@ void initMainMenuScreen() {
     currentButton = 0;
 }
 
-void updateMainMenuScreen(ScreenState *ss,SettingsFile *sf) {
+void updateMainMenuScreen(ScreenState *ss, SettingsFile *sf, ResourcesState *rs) {
     if (toScreen != -1) return;
     // Menu navigation
     if (IsKeyPressed(KEY_DOWN)) {
@@ -43,7 +43,7 @@ void updateMainMenuScreen(ScreenState *ss,SettingsFile *sf) {
     if (IsKeyPressed(KEY_ENTER)) {
         switch(currentButton) {
             case 0:
-                initIntroScreen();
+                initIntroScreen(rs);
                 toScreen = INTRO;
                 break;
             case 1:

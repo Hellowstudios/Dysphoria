@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "screens.h"
+#include "camerasystem.h"
 #include <stdio.h>
 #include "utils.h"
 #include "helpers.h"
@@ -15,27 +16,42 @@ void InitilizeResources(
    rs->mainFontMd = LoadFontEx("resources/fonts/GloriaHallelujah-Regular.ttf", 120, NULL, 0xFFFF);
    SetTextureFilter(rs->mainFontMd.texture, TEXTURE_FILTER_BILINEAR);  
 
-}
+} 
 
 void DrawGame(
     MainState *ms,
     ResourcesState *rs,
     ScreenState *ss,
     WindowState *ws,
-    PlayerMovementState *pms
-) {
+    PlayerMovementState *pms,
+    Camera2D camera)
+{
+
     BeginDrawing();
     ClearBackground(BLACK);
 
     switch (ss->currentScreen)
     {
-        case MAIN_MENU: drawMainMenuScreen(ws, rs); break;
-        case INTRO: drawIntroScreen(rs, ms, pms); break;
-        case ENDING: drawEndingScreen(); break;
-        case OPTIONS: drawOptionsScreen(rs); break;
+    case MAIN_MENU:
+        EndMode2D();
+        drawMainMenuScreen(ws, rs);
+        break;
+    case INTRO:
+        BeginMode2D(camera);
+        drawIntroScreen(rs, ms, pms);
+        break;
+    case ENDING:
+        EndMode2D();
+        drawEndingScreen();
+        break;
+    case OPTIONS:
+        EndMode2D();
+        drawOptionsScreen(rs);
+        break;
     }
 
-    if (ss->onTransition) DrawScreenTransition();
+    if (ss->onTransition)
+        DrawScreenTransition();
 
     EndDrawing();
 }
@@ -46,7 +62,8 @@ void UpdateGame(
     ScreenState *ss,
     WindowState *ws,
     PlayerMovementState *pms,
-    SettingsFile *sf
+    SettingsFile *sf,
+    Camera2D *camera
 ) {
     if (!ss->onTransition)
     {
@@ -54,7 +71,7 @@ void UpdateGame(
         {
             case MAIN_MENU:
             {
-                updateMainMenuScreen(ss, sf);
+                updateMainMenuScreen(ss, sf, rs);
                 
                 int nextScreen = finishMainMenuScreen();
                 if (nextScreen != -1)
@@ -76,27 +93,31 @@ void UpdateGame(
             } break;        
             case INTRO:
             {
-                updateIntroScreen(ms, pms);
+                updateMainMenuScreen(ss, sf, rs);
 
-                int nextScreen = finishIntroScreen();
-                if (nextScreen != -1)                {
-                    TransitionToScreen(ss, nextScreen);
-                    unloadIntroScreen();
-                }
-            } break;
-            case ENDING:
-            {
-                updateEndingScreen();
+                    updateIntroScreen(camera,ms, pms);
 
-                int nextScreen = finishEndingScreen();
-                if (nextScreen != -1)
+                    int nextScreen = finishIntroScreen();
+                    if (nextScreen != -1)                {
+                        TransitionToScreen(ss, nextScreen);
+                        unloadIntroScreen(rs);
+                    }
+                } break;
+                case ENDING:
                 {
-                    TransitionToScreen(ss, nextScreen);
-                    unloadEndingScreen();
-                }
-            } break;
+                    updateEndingScreen();
+
+                    int nextScreen = finishEndingScreen();
+                    if (nextScreen != -1)
+                    {
+                        TransitionToScreen(ss, nextScreen);
+                        unloadEndingScreen();
+                    }
+                } break;
+            }
         }
-    } else UpdateScreenTransition(ss);
+    else 
+        UpdateScreenTransition(ss);
 }
 
 //------------------------------------------------------------------------------------
@@ -124,11 +145,15 @@ int main(void)
     printf("INFO: Reading settings file\n");
     SettingsFile* sf = readSettingsFile();
     WindowState ws = {600, 300};
+
     MainState ms = {false, false};
     ScreenState ss = {MAIN_MENU, false};
     PlayerMovementState pms = {{10, ws.screenHeight / 2 - 50, 25, 100}, 8.0f};
 
     printf("INFO: Setting config flag FLAG_WINDOW_RESIZABLE\n");
+
+    Camera2D camera = InitCamera(ws.screenWidth, ws.screenHeight, &pms);
+
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 
     printf("INFO: Initilizing window\n");
@@ -158,9 +183,9 @@ int main(void)
         ws.screenWidth = GetScreenWidth();
         ws.screenHeight = GetScreenHeight();
         // Update game logic
-        UpdateGame(&ms, &rs, &ss, &ws, &pms, sf);
+        UpdateGame(&ms, &rs, &ss, &ws, &pms, sf, &camera);
         // Draw game logic
-        DrawGame(&ms, &rs, &ss, &ws, &pms);
+        DrawGame(&ms, &rs, &ss, &ws, &pms,camera);
     }
 
     // --------------------------------------------------------------------------------------

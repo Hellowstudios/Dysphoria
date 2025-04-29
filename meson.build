@@ -60,23 +60,28 @@ endif
 # Project files
 
 inc_dir = include_directories(
-  'src/includes', 
+  'src/includes',
   'src/includes/helpers',
   'src/includes/utils',
+  'src/includes/gameplay',
 )
 
 sources = files(
+  'src/gameplay/player.c',
+
   'src/main.c',
-  
-  'src/screens/ending.c',  
+  'src/gameplay/cameraSystem.c',
+  'src/gameplay/player.c',
+
+  'src/screens/ending.c',
   'src/screens/intro.c',
   'src/screens/mainMenu.c',
   'src/screens/transition.c',
+  
   'src/screens/options.c',
 
   'src/helpers/writeSettingsFile.c',
   'src/helpers/readSettingsFile.c',
-  'src/helpers/player.c',
 
   'src/utils/closeWindow.c',
   'src/utils/getDysphoriaDir.c',

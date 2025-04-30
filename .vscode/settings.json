@@ -9,6 +9,7 @@
     "utils.h": "c",
     "helpers.h": "c",
     "camerasystem.h": "c",
-    "raylib.h": "c"
+    "raylib.h": "c",
+    "states.h": "c"
   }
 }

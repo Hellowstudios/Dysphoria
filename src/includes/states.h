@@ -68,12 +68,15 @@ typedef struct
 //----------------------------------------------------------------------------------
 // Player movement related states
 //----------------------------------------------------------------------------------
-typedef struct
-{
+typedef struct PlayerMovementState {
     Rectangle player;
-    float playerSpeed;
+    float maxSpeed;
+    float velocityX;    
+    float velocityY;    
+    float acceleration; 
+    float friction;     
+    bool notMoving;
 } PlayerMovementState;
-
 //----------------------------------------------------------------------------------
 // Game save file data
 //----------------------------------------------------------------------------------

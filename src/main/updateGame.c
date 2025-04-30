@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "raylib.h"
 #include "states.h"
+#include "screens.h"
 
 void updateGame(
     MainState *ms,

@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "helpers.h"
 #include "main.h"
+#include "states.h"
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -55,7 +56,7 @@ int main(void)
         ws.screenHeight = GetScreenHeight();
         
         // Update game logic
-        updateGame(&ms, rs, &ss, &ws, &sf);
+        updateGame(&ms, rs, &ss, &ws, sf);
         // Draw game logic MainState *ms,
         drawGame(rs, &ms, &ss ,&ws);
     }

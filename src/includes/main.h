@@ -15,8 +15,8 @@ void updateGame(
 );
 
 void drawGame(
-    MainState *ms,
     ResourcesState *rs,
+    MainState *ms,
     ScreenState *ss,
     WindowState *ws
 );

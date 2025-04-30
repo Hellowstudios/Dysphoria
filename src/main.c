@@ -39,6 +39,7 @@ void DrawGame(
     case INTRO:
         BeginMode2D(camera);
         drawIntroScreen(rs, ms, pms);
+        EndMode2D();  // Add this to end 2D mode before transition
         break;
     case ENDING:
         EndMode2D();
@@ -51,7 +52,7 @@ void DrawGame(
     }
 
     if (ss->onTransition)
-        DrawScreenTransition();
+        DrawScreenTransition(ws);
 
     EndDrawing();
 }
@@ -93,29 +94,27 @@ void UpdateGame(
             } break;        
             case INTRO:
             {
-                updateMainMenuScreen(ss, sf, rs);
+                updateIntroScreen(camera, ms, pms, ws, rs);
 
-                    updateIntroScreen(camera,ms, pms);
+                int nextScreen = finishIntroScreen();
+                if (nextScreen != -1)                {
+                    TransitionToScreen(ss, nextScreen);
+                    unloadIntroScreen(rs);
+                }
+            } break;
+            case ENDING:
+            {
+                updateEndingScreen();
 
-                    int nextScreen = finishIntroScreen();
-                    if (nextScreen != -1)                {
-                        TransitionToScreen(ss, nextScreen);
-                        unloadIntroScreen(rs);
-                    }
-                } break;
-                case ENDING:
+                int nextScreen = finishEndingScreen();
+                if (nextScreen != -1)
                 {
-                    updateEndingScreen();
-
-                    int nextScreen = finishEndingScreen();
-                    if (nextScreen != -1)
-                    {
-                        TransitionToScreen(ss, nextScreen);
-                        unloadEndingScreen();
-                    }
-                } break;
-            }
-        }
+                    TransitionToScreen(ss, nextScreen);
+                    unloadEndingScreen();
+                }
+            } break;
+        } 
+    }
     else 
         UpdateScreenTransition(ss);
 }
@@ -129,7 +128,21 @@ int main(void)
     // Game initialization
     // --------------------------------------------------------------------------------------
   
-    printf("INFO: Initilizing game\n");
+    WindowState ws = {1920, 1080};
+
+    printf("INFO: Initilizing window\n");
+    InitWindow(ws.screenWidth, ws.screenHeight, "Dysphoria - v0.1");
+
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+
+    printf("INFO: Initilizing audio\n");
+    InitAudioDevice();
+    
+    SettingsFile* sf = readSettingsFile();
+    printf("INFO: Setting target fps\n");
+    SetTargetFPS(sf->fps);
+
+    printf("INFO: Initilizing resources\n");
     ResourcesState rs = {
         .playerWalk1Texture = (Texture){0},
         .playerWalk2Texture = (Texture){0},
@@ -142,33 +155,26 @@ int main(void)
         .mainFontSm = (Font){0},
         .mainFontMd = (Font){0}
     };
-    printf("INFO: Reading settings file\n");
-    SettingsFile* sf = readSettingsFile();
-    WindowState ws = {600, 300};
+    InitilizeResources(&rs);
 
+    printf("INFO: Initilizing game\n");
+    printf("INFO: Reading settings file\n");
+  
     MainState ms = {false, false};
     ScreenState ss = {MAIN_MENU, false};
-    PlayerMovementState pms = {{10, ws.screenHeight / 2 - 50, 25, 100}, 8.0f};
-
-    printf("INFO: Setting config flag FLAG_WINDOW_RESIZABLE\n");
+    PlayerMovementState pms = {
+        .acceleration = 3,    // Reduced further for smoother acceleration
+        .friction = 0.92f,        // Adjusted friction
+        .notMoving = true,
+        .player = {20, 20, rs.playerWalk1Texture.width, rs.playerWalk1Texture.height},
+        .maxSpeed = 2,
+        .velocityX = 0,
+        .velocityY = 0,
+    };
 
     Camera2D camera = InitCamera(ws.screenWidth, ws.screenHeight, &pms);
 
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-
-    printf("INFO: Initilizing window\n");
-    InitWindow(ws.screenWidth, ws.screenHeight, "Dysphoria - v0.1");
-    
-    printf("INFO: Initilizing audio\n");
-    InitAudioDevice();
-    
-    printf("INFO: Setting target fps\n");
-    SetTargetFPS(sf->fps);
-
     SetExitKey(0);
-
-    printf("INFO: Initilizing resources\n");
-    InitilizeResources(&rs);
     
     // --------------------------------------------------------------------------------------
     // Main game loop

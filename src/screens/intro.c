@@ -3,6 +3,7 @@
 #include "states.h"
 #include "player.h"
 #include "camerasystem.h"
+#include  <stdio.h>
 
 //----------------------------------------------------------------------------------
 // Global Variables Definition (local to this module)
@@ -16,6 +17,8 @@ void initIntroScreen(ResourcesState *rs)
     Image playerImage1 = LoadImage("resources/img/character/walk1.png");
     Image playerImage2 = LoadImage("resources/img/character/walk2.png");
     Image roomImage = LoadImage("resources/img/objects/wood-planks.png");
+        ImageResize(&roomImage, 500, 500);
+
     rs->playerWalk1Texture = LoadTextureFromImage(playerImage1);
     rs->playerWalk2Texture = LoadTextureFromImage(playerImage2);
     rs->room = LoadTextureFromImage(roomImage);
@@ -23,11 +26,12 @@ void initIntroScreen(ResourcesState *rs)
     UnloadImage(playerImage2);
     UnloadImage(roomImage);
 };
-void updateIntroScreen(Camera2D *camera, MainState *ms, PlayerMovementState *pms)
+
+void updateIntroScreen(Camera2D *camera, MainState *ms, PlayerMovementState *pms, WindowState *ws, ResourcesState *rs)
 {
     // Update GAMEPLAY screen
-    UpdatePlayerMovement(ms, pms);
-    UpdateGameCamera(camera,pms);
+    UpdatePlayerMovement(ms, pms, rs);
+    UpdateGameCamera(camera, pms, ws);
 
     if (IsKeyPressed(KEY_ENTER)) {
         initEndingScreen();
@@ -45,6 +49,9 @@ void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms
         DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(WHITE, 0.8f));
         DrawText("GAME PAUSED", 320, 200, 30, RED);
     }
+   
+
+
 };
 
 void unloadIntroScreen(ResourcesState *rs)

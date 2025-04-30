@@ -6,6 +6,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-void UpdatePlayerMovement(MainState *ms, PlayerMovementState *pms);
+void UpdatePlayerMovement(MainState *ms, PlayerMovementState *pms, ResourcesState *rs);
 
 #endif

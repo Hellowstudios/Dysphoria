@@ -48,7 +48,7 @@ void UpdateScreenTransition(ScreenState *state)
 }
 
 // Draw transition effect (full-screen rectangle)
-void DrawScreenTransition(void)
+void DrawScreenTransition(WindowState *ws)
 {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, transAlpha));
 }

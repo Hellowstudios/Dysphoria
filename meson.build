@@ -67,9 +67,14 @@ inc_dir = include_directories(
 )
 
 sources = files(
+  'src/main/main.c',
+  'src/main/drawGame.c',
+  'src/main/initilizeResources.c',
+  'src/main/updateGame.c',
+
   'src/gameplay/player.c',
 
-  'src/main.c',
+
   'src/gameplay/cameraSystem.c',
   'src/gameplay/player.c',
 

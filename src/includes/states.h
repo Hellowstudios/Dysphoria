@@ -61,7 +61,13 @@ typedef struct
 
     Font mainFontSm;
     Font mainFontMd;
-    Texture room;
+
+    Texture roomFloor;
+    Texture roomWall;
+    Texture plant;
+    Texture plant2;
+    Texture plant3;
+    Texture plant4;
 
 } ResourcesState;
 
@@ -103,5 +109,22 @@ typedef struct
 } SettingsFile;
 
 
+typedef struct
+{
+    int x;
+    int y;
+} Position;
+
+
+//----------------------------------------------------------------------------------
+// Objects positions in the intro screen
+//---------------- ------------------------------------------------------------------
+typedef struct
+{
+    Rectangle plant;
+    Rectangle plant2;
+    Rectangle plant3;
+    Rectangle plant4;
+} IntroScreenObjects;
 
 #endif

@@ -4,7 +4,6 @@
 #include "raylib.h"
 #include "states.h"
 
-Camera2D InitCamera(int screenWidth, int screenHeight, PlayerMovementState *pms);
 void UpdateGameCamera(Camera2D *camera, PlayerMovementState *pms, WindowState *ws);
 
 #endif

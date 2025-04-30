@@ -7,7 +7,7 @@
 // Main Menu Screen Functions Declaration
 //----------------------------------------------------------------------------------
 void initMainMenuScreen();
-void updateMainMenuScreen(ScreenState *ss, SettingsFile *sf, ResourcesState *rs);
+void updateMainMenuScreen(ScreenState *ss, SettingsFile *sf, ResourcesState *rs, WindowState *ws);
 void drawMainMenuScreen(WindowState *ws, ResourcesState *rs);
 void unloadMainMenuScreen(void);
 int finishMainMenuScreen(void);
@@ -15,9 +15,9 @@ int finishMainMenuScreen(void);
 //----------------------------------------------------------------------------------
 // Intro Screen Functions Declaration
 //----------------------------------------------------------------------------------
-void initIntroScreen(ResourcesState *rs);
-void updateIntroScreen(Camera2D *camera, MainState *ms, PlayerMovementState *pms, WindowState *ws, ResourcesState *rs);
-void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms);
+void initIntroScreen(ResourcesState *rs, WindowState *ws);
+void updateIntroScreen(MainState *ms, WindowState *ws, ResourcesState *rs);
+void drawIntroScreen(ResourcesState *rs, MainState *ms);
 void unloadIntroScreen(ResourcesState *rs);
 int finishIntroScreen(void);
 

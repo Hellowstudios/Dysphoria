@@ -10,6 +10,7 @@
     "helpers.h": "c",
     "camerasystem.h": "c",
     "raylib.h": "c",
-    "states.h": "c"
+    "states.h": "c",
+    "stdbool.h": "c"
   }
 }

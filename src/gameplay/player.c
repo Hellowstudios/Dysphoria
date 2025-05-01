@@ -7,7 +7,7 @@ int count = 0;
 
 void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle objects[], int objectCount)
 {
-    float deltaTime = GetFrameTime();
+    float deltaTime = GetFrameTime() * 60;
     printf("Delta time: %f\n", deltaTime);
 
     bool isUp = IsKeyDown(KEY_UP);
@@ -35,7 +35,7 @@ void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle ob
     }
     
     // Apply friction
-    float adjustedFriction = pow(pms->friction, deltaTime * 60.0f);
+    float adjustedFriction = pow(pms->friction, deltaTime);
     pms->velocityX *= adjustedFriction;
     pms->velocityY *= adjustedFriction;
 

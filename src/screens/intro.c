@@ -34,11 +34,11 @@ void initIntroScreen(ResourcesState *rs, WindowState *ws)
     map = (Rectangle){0, rs->roomWall.height - rs->playerWalk1Texture.height, rs->roomFloor.width, rs->roomFloor.height};
 
     pms = (PlayerMovementState){
-        .acceleration = 300,    // Reduced further for smoother acceleration
+        .acceleration = 3,    // Reduced further for smoother acceleration
         .friction = 0.92f,    // Adjusted friction
         .notMoving = false,
         .player = {map.x + 20, map.y + 20, rs->playerWalk1Texture.width, rs->playerWalk1Texture.height},
-        .maxSpeed = 200,
+        .maxSpeed = 2,
         .velocityX = 0,
         .velocityY = 0,
     };

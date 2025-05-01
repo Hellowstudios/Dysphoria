@@ -22,7 +22,7 @@ void UpdateScreenTransition(ScreenState *state)
 {
     if (!transFadeOut)
     {
-        transAlpha += 0.02f;
+        transAlpha += 2.0f * GetFrameTime(); 
 
         if (transAlpha >= 1.0)
         {
@@ -34,7 +34,7 @@ void UpdateScreenTransition(ScreenState *state)
     }
     else  // Transition fade out logic
     {
-        transAlpha -= 0.02f;
+        transAlpha -= 2.0f * GetFrameTime();
 
         if (transAlpha <= 0)
         {

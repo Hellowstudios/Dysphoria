@@ -20,9 +20,10 @@ void TransitionToScreen(ScreenState *state, Screen toScreen)
 // Update transition effect
 void UpdateScreenTransition(ScreenState *state)
 {
+    float deltaTime = GetFrameTime() * 60;
     if (!transFadeOut)
-    {
-        transAlpha += 2.0f * GetFrameTime(); 
+    {        
+        transAlpha += 0.02f * deltaTime;
 
         if (transAlpha >= 1.0)
         {
@@ -34,7 +35,7 @@ void UpdateScreenTransition(ScreenState *state)
     }
     else  // Transition fade out logic
     {
-        transAlpha -= 2.0f * GetFrameTime();
+        transAlpha -= 0.02f * deltaTime;
 
         if (transAlpha <= 0)
         {

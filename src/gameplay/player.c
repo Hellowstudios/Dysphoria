@@ -49,10 +49,10 @@ void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle ob
     }
     
     // Cap maximum speed
-    if (pms->velocityX > pms->maxSpeed * deltaTime) pms->velocityX = pms->maxSpeed * deltaTime;
-    if (pms->velocityX < -pms->maxSpeed * deltaTime) pms->velocityX = -pms->maxSpeed * deltaTime;
-    if (pms->velocityY > pms->maxSpeed * deltaTime) pms->velocityY = pms->maxSpeed * deltaTime;
-    if (pms->velocityY < -pms->maxSpeed * deltaTime) pms->velocityY = -pms->maxSpeed * deltaTime;
+    if (pms->velocityX > pms->maxSpeed) pms->velocityX = pms->maxSpeed ;
+    if (pms->velocityX < -pms->maxSpeed) pms->velocityX = -pms->maxSpeed ;
+    if (pms->velocityY > pms->maxSpeed ) pms->velocityY = pms->maxSpeed ;
+    if (pms->velocityY < -pms->maxSpeed ) pms->velocityY = -pms->maxSpeed ;
 
     Rectangle playerNext = {
         .x = pms->player.x + pms->velocityX,

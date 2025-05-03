@@ -7,48 +7,51 @@ int count = 0;
 
 void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle objects[], int objectCount)
 {
-    float deltaTime = GetFrameTime() * 60;
-    printf("Delta time: %f\n", deltaTime);
+    
 
     bool isUp = IsKeyDown(KEY_UP);
     bool isDown = IsKeyDown(KEY_DOWN);
     bool isRight = IsKeyDown(KEY_RIGHT);
     bool isLeft = IsKeyDown(KEY_LEFT);
+    printf("isUp: %d, isDown: %d, isRight: %d, isLeft: %d\n", isUp, isDown, isRight, isLeft);
 
     // Prevent right+up and left+down combinations
     if (!(isRight && isUp) && !(isLeft && isUp) && !(isLeft && isDown) && !(isRight && isDown))
     {
         // Apply acceleration based on input
         if (isUp) {
-            pms->velocityY -= pms->acceleration *deltaTime;
+            pms->velocityY -= pms->acceleration;
             pms->notMoving = false;
         } if (isDown) {
-            pms->velocityY += pms->acceleration * deltaTime;
+            pms->velocityY += pms->acceleration;
             pms->notMoving = false;
         } if (isRight) {
-            pms->velocityX += pms->acceleration * deltaTime;
+            pms->velocityX += pms->acceleration;
             pms->notMoving = false;
         } if (isLeft) {
-            pms->velocityX -= pms->acceleration * deltaTime;
+            pms->velocityX -= pms->acceleration;
             pms->notMoving = false;
         }
     }
     
     // Apply friction
-    float adjustedFriction = pow(pms->friction, deltaTime);
-    pms->velocityX *= adjustedFriction;
-    pms->velocityY *= adjustedFriction;
+    pms->velocityX *= pms->friction;
+    pms->velocityY *= pms->friction;
 
     // Round very small velocities to 0 to prevent trembling
     if (fabs(pms->velocityX) < 1) pms->velocityX = 0;
     if (fabs(pms->velocityY) < 1) pms->velocityY = 0;
+    printf("VelocityX: %f, VelocityY: %f\n", pms->velocityX, pms->velocityY);
 
     // Set notMoving when both velocities are zero
     if (pms->velocityX == 0 && pms->velocityY == 0) {
         pms->notMoving = true;
+        printf("Not moving\n");
     }
     
     // Cap maximum speed
+    
+    printf("maxSpeed: %f\n", pms->maxSpeed);
     if (pms->velocityX > pms->maxSpeed) pms->velocityX = pms->maxSpeed ;
     if (pms->velocityX < -pms->maxSpeed) pms->velocityX = -pms->maxSpeed ;
     if (pms->velocityY > pms->maxSpeed ) pms->velocityY = pms->maxSpeed ;

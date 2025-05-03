@@ -36,7 +36,7 @@ void initIntroScreen(ResourcesState *rs, WindowState *ws)
 
     pms = (PlayerMovementState){
         .acceleration = 3,    // Reduced further for smoother acceleration
-        .friction = 0.92f,    // Adjusted friction
+        .friction = 0.7f,    // Adjusted friction
         .notMoving = false,
         .player = {map.x + 20, map.y + 20, rs->playerWalk1Texture.width, rs->playerWalk1Texture.height},
         .maxSpeed = 2,

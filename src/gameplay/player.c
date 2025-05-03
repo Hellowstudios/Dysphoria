@@ -7,7 +7,8 @@ int count = 0;
 
 void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle objects[], int objectCount)
 {
-    
+    float deltaTime = GetFrameTime() * 60;
+    printf("Delta time: %f\n", deltaTime);
 
     bool isUp = IsKeyDown(KEY_UP);
     bool isDown = IsKeyDown(KEY_DOWN);
@@ -20,23 +21,24 @@ void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle ob
     {
         // Apply acceleration based on input
         if (isUp) {
-            pms->velocityY -= pms->acceleration;
+            pms->velocityY -= pms->acceleration *deltaTime;
             pms->notMoving = false;
         } if (isDown) {
-            pms->velocityY += pms->acceleration;
+            pms->velocityY += pms->acceleration * deltaTime;
             pms->notMoving = false;
         } if (isRight) {
-            pms->velocityX += pms->acceleration;
+            pms->velocityX += pms->acceleration * deltaTime;
             pms->notMoving = false;
         } if (isLeft) {
-            pms->velocityX -= pms->acceleration;
+            pms->velocityX -= pms->acceleration * deltaTime;
             pms->notMoving = false;
         }
     }
     
     // Apply friction
-    pms->velocityX *= pms->friction;
-    pms->velocityY *= pms->friction;
+    float adjustedFriction = pow(pms->friction, deltaTime);
+    pms->velocityX *= adjustedFriction;
+    pms->velocityY *= adjustedFriction;
 
     // Round very small velocities to 0 to prevent trembling
     if (fabs(pms->velocityX) < 1) pms->velocityX = 0;

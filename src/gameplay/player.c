@@ -14,6 +14,7 @@ void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle ob
     bool isDown = IsKeyDown(KEY_DOWN);
     bool isRight = IsKeyDown(KEY_RIGHT);
     bool isLeft = IsKeyDown(KEY_LEFT);
+    printf("isUp: %d, isDown: %d, isRight: %d, isLeft: %d\n", isUp, isDown, isRight, isLeft);
 
     // Prevent right+up and left+down combinations
     if (!(isRight && isUp) && !(isLeft && isUp) && !(isLeft && isDown) && !(isRight && isDown))
@@ -42,17 +43,21 @@ void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle ob
     // Round very small velocities to 0 to prevent trembling
     if (fabs(pms->velocityX) < 1) pms->velocityX = 0;
     if (fabs(pms->velocityY) < 1) pms->velocityY = 0;
+    printf("VelocityX: %f, VelocityY: %f\n", pms->velocityX, pms->velocityY);
 
     // Set notMoving when both velocities are zero
     if (pms->velocityX == 0 && pms->velocityY == 0) {
         pms->notMoving = true;
+        printf("Not moving\n");
     }
     
     // Cap maximum speed
-    if (pms->velocityX > pms->maxSpeed * deltaTime) pms->velocityX = pms->maxSpeed * deltaTime;
-    if (pms->velocityX < -pms->maxSpeed * deltaTime) pms->velocityX = -pms->maxSpeed * deltaTime;
-    if (pms->velocityY > pms->maxSpeed * deltaTime) pms->velocityY = pms->maxSpeed * deltaTime;
-    if (pms->velocityY < -pms->maxSpeed * deltaTime) pms->velocityY = -pms->maxSpeed * deltaTime;
+    
+    printf("maxSpeed: %f\n", pms->maxSpeed);
+    if (pms->velocityX > pms->maxSpeed) pms->velocityX = pms->maxSpeed ;
+    if (pms->velocityX < -pms->maxSpeed) pms->velocityX = -pms->maxSpeed ;
+    if (pms->velocityY > pms->maxSpeed ) pms->velocityY = pms->maxSpeed ;
+    if (pms->velocityY < -pms->maxSpeed ) pms->velocityY = -pms->maxSpeed ;
 
     Rectangle playerNext = {
         .x = pms->player.x + pms->velocityX,

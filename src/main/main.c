@@ -45,7 +45,7 @@ int main(void)
 
     // We initialize the main menu screen here because this is the first screen we will draw
     initMainMenuScreen();
-    
+    InitTimeState(0.02f);
     // --------------------------------------------------------------------------------------
     // Main game loop
     // --------------------------------------------------------------------------------------

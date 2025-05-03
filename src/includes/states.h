@@ -95,6 +95,11 @@ typedef struct
 } SaveFile;
 
 
+typedef struct TimeState
+{
+    float fixedTimeStep;
+    float accumulator;
+} TimeState;
 
 //----------------------------------------------------------------------------------
 // Game save file data

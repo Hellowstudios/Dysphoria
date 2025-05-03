@@ -69,6 +69,7 @@ inc_dir = include_directories(
 sources = files(
   'src/main/main.c',
   'src/main/drawGame.c',
+  'src/main/fixedUpdate.c',
   'src/main/initilizeResources.c',
   'src/main/updateGame.c',
 

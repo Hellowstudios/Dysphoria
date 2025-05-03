@@ -20,5 +20,6 @@ void drawGame(
     ScreenState *ss,
     WindowState *ws
 );
-
+bool FixedUpdate();
+void InitTimeState(float fixedTimeStep);
 #endif

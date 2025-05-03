@@ -3,6 +3,7 @@
 #include "states.h"
 #include "player.h"
 #include "camerasystem.h"
+#include "main.h"
 #include  <stdio.h>
 
 //----------------------------------------------------------------------------------
@@ -68,8 +69,10 @@ void initIntroScreen(ResourcesState *rs, WindowState *ws)
 
 void updateIntroScreen(MainState *ms, WindowState *ws, ResourcesState *rs)
 {
-    UpdateGameCamera(&camera, &pms, ws);
-    UpdatePlayerMovement(&pms, &map, objects, numObjects);
+    if(FixedUpdate()) {
+        UpdatePlayerMovement(&pms, &map, objects, numObjects);
+        UpdateGameCamera(&camera, &pms, ws);
+    }
 
     if (IsKeyPressed(KEY_ENTER)) {
         initEndingScreen();

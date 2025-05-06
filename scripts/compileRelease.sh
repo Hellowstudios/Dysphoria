@@ -1,0 +1,1 @@
+meson setup build --buildtype release --wipe && meson compile -C build

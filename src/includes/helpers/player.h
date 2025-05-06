@@ -6,6 +6,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-void updatePlayerMovement(MainState *ms, PlayerMovementState *pms);
+void UpdatePlayerMovement(PlayerMovementState *pms, Rectangle *map, Rectangle objects[], int objectsCount);
 
 #endif

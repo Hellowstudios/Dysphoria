@@ -1,8 +1,16 @@
 {
-    "editor.tabSize": 4,
-    "editor.insertSpaces": true,
-    "editor.detectIndentation": false,
-    "files.associations": {
-        "player.h": "c"
-    }
+  "C_Cpp_Runner.msvcBatchPath": "",
+  "files.associations": {
+    "*.uss": "css",
+    "*.uxml": "xml",
+    "stdio.h": "c",
+    "screens.h": "c",
+    "camera.h": "c",
+    "utils.h": "c",
+    "helpers.h": "c",
+    "camerasystem.h": "c",
+    "raylib.h": "c",
+    "states.h": "c",
+    "stdbool.h": "c"
+  }
 }

@@ -6,19 +6,19 @@
 //----------------------------------------------------------------------------------
 // Main Menu Screen Functions Declaration
 //----------------------------------------------------------------------------------
-void initMainMenuScreen(void);
-void updateMainMenuScreen(void);
-void drawMainMenuScreen(WindowState *ws);
+void initMainMenuScreen();
+void updateMainMenuScreen(ScreenState *ss, SettingsFile *sf, ResourcesState *rs, WindowState *ws);
+void drawMainMenuScreen(WindowState *ws, ResourcesState *rs);
 void unloadMainMenuScreen(void);
 int finishMainMenuScreen(void);
 
 //----------------------------------------------------------------------------------
 // Intro Screen Functions Declaration
 //----------------------------------------------------------------------------------
-void initIntroScreen(void);
-void updateIntroScreen(MainState *ms, PlayerMovementState *pms);
-void drawIntroScreen(ResourcesState *rs, MainState *ms, PlayerMovementState *pms);
-void unloadIntroScreen(void);
+void initIntroScreen(ResourcesState *rs, WindowState *ws);
+void updateIntroScreen(MainState *ms, WindowState *ws, ResourcesState *rs);
+void drawIntroScreen(ResourcesState *rs, MainState *ms);
+void unloadIntroScreen(ResourcesState *rs);
 int finishIntroScreen(void);
 
 //----------------------------------------------------------------------------------
@@ -30,11 +30,21 @@ void drawEndingScreen(void);
 void unloadEndingScreen(void);
 int finishEndingScreen(void);
 
+
+//----------------------------------------------------------------------------------
+// Options Screen Functions Declaration
+//----------------------------------------------------------------------------------
+void initOptionsScreen(SettingsFile *sf);
+void updateOptionsScreen(SettingsFile *sf);
+void drawOptionsScreen(ResourcesState *rs);
+void unloadOptionsScreen(void);
+int finishOptionsScreen(void);
+
 //----------------------------------------------------------------------------------
 // Screen Transitions Functions Declaration
 //----------------------------------------------------------------------------------
 void TransitionToScreen(ScreenState *state, Screen toScreen);
 void UpdateScreenTransition(ScreenState *state);
-void DrawScreenTransition(void);
+void DrawScreenTransition(WindowState *ws);
 
 #endif

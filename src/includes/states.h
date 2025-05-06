@@ -31,6 +31,7 @@ typedef enum
     MAIN_MENU = 0,
     INTRO,
     ENDING,
+    OPTIONS,
 } Screen;
 
 //----------------------------------------------------------------------------------
@@ -48,21 +49,43 @@ typedef struct
 typedef struct
 {
     Texture playerWalk1Texture;
+    Texture playerWalk2Texture;
+    
+    Texture playerLeftWalk1Texture;
+    Texture playerLeftWalk2Texture;
+    Texture playerLeftWalk3Texture;
+    
+    Texture playerRightWalk1Texture;
+    Texture playerRightWalk2Texture;
+    Texture playerRightWalk3Texture;
+
+    Font mainFontSm;
+    Font mainFontMd;
+
+    Texture roomFloor;
+    Texture roomWall;
+    Texture plant;
+    Texture plant2;
+    Texture plant3;
+    Texture plant4;
+
 } ResourcesState;
 
 //----------------------------------------------------------------------------------
 // Player movement related states
 //----------------------------------------------------------------------------------
-typedef struct
-{
+typedef struct PlayerMovementState {
     Rectangle player;
-    float playerSpeed;
+    float maxSpeed;
+    float velocityX;    
+    float velocityY;    
+    float acceleration; 
+    float friction;     
+    bool notMoving;
 } PlayerMovementState;
-
 //----------------------------------------------------------------------------------
 // Game save file data
 //----------------------------------------------------------------------------------
-extern const char gameSaveFilePath[]; // Declaration only
 
 typedef struct
 {
@@ -70,5 +93,43 @@ typedef struct
     unsigned hour : 5;   // 0-23 range
     unsigned minute : 6; // 0-59 range
 } SaveFile;
+
+
+typedef struct TimeState
+{
+    float fixedTimeStep;
+    float accumulator;
+} TimeState;
+
+//----------------------------------------------------------------------------------
+// Game save file data
+//----------------------------------------------------------------------------------
+typedef struct
+{   
+    unsigned short fileVersion;
+    unsigned short musicVolume; 
+    unsigned short soundVolume; 
+    unsigned short language; 
+    unsigned short fps;  
+} SettingsFile;
+
+
+typedef struct
+{
+    int x;
+    int y;
+} Position;
+
+
+//----------------------------------------------------------------------------------
+// Objects positions in the intro screen
+//---------------- ------------------------------------------------------------------
+typedef struct
+{
+    Rectangle plant;
+    Rectangle plant2;
+    Rectangle plant3;
+    Rectangle plant4;
+} IntroScreenObjects;
 
 #endif

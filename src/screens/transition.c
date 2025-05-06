@@ -20,9 +20,10 @@ void TransitionToScreen(ScreenState *state, Screen toScreen)
 // Update transition effect
 void UpdateScreenTransition(ScreenState *state)
 {
+    float deltaTime = GetFrameTime() * 60;
     if (!transFadeOut)
-    {
-        transAlpha += 0.02f;
+    {        
+        transAlpha += 0.02f * deltaTime;
 
         if (transAlpha >= 1.0)
         {
@@ -34,7 +35,7 @@ void UpdateScreenTransition(ScreenState *state)
     }
     else // Transition fade out logic
     {
-        transAlpha -= 0.02f;
+        transAlpha -= 0.02f * deltaTime;
 
         if (transAlpha <= 0)
         {
@@ -48,7 +49,7 @@ void UpdateScreenTransition(ScreenState *state)
 }
 
 // Draw transition effect (full-screen rectangle)
-void DrawScreenTransition(void)
+void DrawScreenTransition(WindowState *ws)
 {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(RAYWHITE, transAlpha));
 }

@@ -24,7 +24,7 @@ void updateMainMenuScreen()
 void drawMainMenuScreen(WindowState *ws)
 {
     DrawText("DYSPHORIA", ws->screenWidth / 1.5, ws->screenHeight / 1.5, 30, WHITE);
-    DrawText(TextFormat("Resolution: %ix%i", ws->screenWidth, ws->screenHeight), 10, 10, 20, BLACK);
+    DrawText(TextFormat("Resolution: %ix%i", ws->screenWidth, ws->screenHeight), 10, 10, 20, WHITE); // display resolution for debugging
 };
 
 void unloadMainMenuScreen()

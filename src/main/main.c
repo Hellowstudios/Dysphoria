@@ -24,22 +24,22 @@ int main(void)
 
     printf("INFO: Initilizing audio\n");
     InitAudioDevice();
-    
-    SettingsFile* sf = readSettingsFile();
+
+    SettingsFile *sf = readSettingsFile();
     printf("INFO: Setting target fps\n");
     SetTargetFPS(sf->fps);
 
     printf("INFO: Initilizing resources\n");
     ResourcesState *rs = initilizeResources();
- 
+
     printf("INFO: Initilizing game\n");
     printf("INFO: Reading settings file\n");
-  
+
     MainState ms = {
         .finishGame = false,
         .pause = false,
     };
-    ScreenState ss ={MAIN_MENU, false};
+    ScreenState ss = {MAIN_MENU, false};
 
     SetExitKey(0);
 
@@ -54,11 +54,11 @@ int main(void)
     {
         ws.screenWidth = GetScreenWidth();
         ws.screenHeight = GetScreenHeight();
-        
+
         // Update game logic
         updateGame(&ms, rs, &ss, &ws, sf);
         // Draw game logic MainState *ms,
-        drawGame(rs, &ms, &ss ,&ws);
+        drawGame(rs, &ms, &ss, &ws);
     }
 
     // --------------------------------------------------------------------------------------
